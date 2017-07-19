@@ -2,8 +2,22 @@
 
 **Xlib.jl** is a Julia package which aims at using X11 library (as a client)
 directly from Julia.  The Package is far from complete (all constants, most
-structures and some functions are covered).  To whet your appetite here is a
-short example (inspired by a
+structures and some functions are covered).
+
+
+## Installation
+
+In the future, the building process will be automated and standardized but for
+now, you have to clone the repository, go to the `deps` directory and type:
+
+    make
+
+also make sure that the constant `_XLIB` in `src/Xlib.jl` is correctly set.
+
+
+## Example
+
+To whet your appetite here is a short example (inspired by a
 [tutorial by Philipp K. Janert](http://www.linuxjournal.com/article/4879)):
 
 ```
