@@ -3,10 +3,11 @@
 #
 # Constant definitions for Julia wrapper of X11 library.
 #
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #
 # Copyright (C) 2017, Éric Thiébaut.
-# All rights reserved.
+#
+# This file is part of Xlib.jl which is licensed under the MIT "Expat" License.
 #
 
 const X_PROTOCOL          = Cint(11) # current protocol version

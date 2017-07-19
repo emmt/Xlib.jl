@@ -1,3 +1,16 @@
+/*
+ * gendefs.c --
+ *
+ * Generate definitions for Xlib.jl.
+ *
+ *------------------------------------------------------------------------------
+ *
+ * Copyright (C) 2017, Éric Thiébaut.
+ *
+ * This file is part of Xlib.jl which is licensed under the MIT "Expat"
+ * License.
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include <X11/Xlib.h>
