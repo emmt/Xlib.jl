@@ -1,8 +1,11 @@
 # A Julia interface to the X11 library
 
-**Xlib.jl** is a Julia package which aims at using X11 library (as a client)
-directly from Julia.  The Package is far from complete: all constants and all
-structures are covered and only some functions have been wrapped (and tested).
+**Xlib.jl** is a [Julia](http://julialang.org/) package which aims at providing
+an interface to the [X11 library](https://en.wikipedia.org/wiki/Xlib) (as a
+client).  The objective is to provide a low-level but complete interface.  A
+higher level interface could be build on top of this low-level version.  The
+package is far from complete: all constants and all structures are covered and
+only some functions have been wrapped (and tested).
 
 
 ## Installation
