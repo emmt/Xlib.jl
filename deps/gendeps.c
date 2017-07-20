@@ -96,6 +96,19 @@ gen_types()
   printf("\n");
 #endif
 
+  fputs("\n"
+        "# Constant to decide between `unsigned int` or `unsigned char` for\n"
+        "# the keycode argument in some functions.\n"
+        "\n"
+        "const NeedWidePrototypes = "
+#if NeedWidePrototypes
+        "true"
+#else
+        "false"
+#endif
+        "\n"
+        "\n", stdout);
+
   printf("\n# Dummy structures with enough elements of a given type.\n");
   printf("\n");
   fixed_size(NULL, NULL, "Cchar",  "c", 32, 8, FALSE);
