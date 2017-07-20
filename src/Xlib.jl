@@ -29,10 +29,6 @@ XOpenDisplay() =
 XCloseDisplay(dpy::Ptr{Display}) =
     ccall((:XCloseDisplay, _XLIB), Cint, (Ptr{Display},), dpy)
 
-const QueuedAlready      = Cint(0)
-const QueuedAfterReading = Cint(1)
-const QueuedAfterFlush   = Cint(2)
-
 XEventsQueued(dpy::Ptr{Display}, mode::Integer) =
     ccall((:XEventsQueued, _XLIB), Cint, (Ptr{Display}, Cint), dpy, mode)
 
