@@ -7,7 +7,7 @@ using Xlib
 
 function test1()
 
-    dpy = XOpenDisplay()
+    dpy = XOpenDisplay(C_NULL)
     dpy == C_NULL && return 1
     scr = DefaultScreen(dpy)
     white = WhitePixel(dpy, scr)
@@ -66,7 +66,7 @@ end
 # Example based on https://en.wikipedia.org/wiki/Xlib
 function test2()
     # Open connection to the server.
-    dpy = XOpenDisplay()
+    dpy = XOpenDisplay(C_NULL)
     dpy == C_NULL && error("unable to open display")
     scr = DefaultScreen(dpy)
 
