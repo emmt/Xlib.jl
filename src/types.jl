@@ -106,7 +106,7 @@ end
 # Graphics context.  The contents of this structure are implementation
 # dependent.  A GC should be treated as opaque by application code.
 
-type _XGC
+immutable _XGC
     ext_data::Ptr{XExtData} # hook for extension to hang data
     gid::GContext           # protocol ID for graphics context
     # FIXME: there is more to this structure, but it is private to Xlib
@@ -117,7 +117,7 @@ const GC = Ptr{_XGC}
 
 # Visual structure; contains information about colormapping possible.
 
-type Visual
+immutable Visual
     ext_data::Ptr{XExtData} # hook for extension to hang data
     visualid::VisualID      # visual id of this visual
     class::Cint             # class of screen (monochrome, etc.)
@@ -131,7 +131,7 @@ end
 
 # Depth structure; contains information for each possible depth.
 
-type Depth
+immutable Depth
     depth::Cint          # this depth (Z) of the depth
     nvisuals::Cint       # number of Visual types at this depth
     visuals::Ptr{Visual} # list of visuals possible at this depth
@@ -142,7 +142,7 @@ end
 # implementation dependent.  A Screen should be treated as opaque by
 # application code.
 
-type Screen
+immutable Screen
     ext_data::Ptr{XExtData}  # hook for extension to hang data
     display::Ptr{Opaque}     # FIXME: back pointer to display structure
     root::Window             # Root window id.
@@ -168,7 +168,7 @@ end
 
 # Format structure; describes ZFormat data the screen will understand.
 
-type ScreenFormat
+immutable ScreenFormat
     ext_data::Ptr{XExtData} # hook for extension to hang data
     depth::Cint             # depth of this image format
     bits_per_pixel::Cint    # bits/pixel at this depth
@@ -377,7 +377,7 @@ end
 # structure are implementation dependent.  A Display should be treated as
 # opaque by application code.
 
-type XDisplay
+immutable XDisplay
     ext_data::Ptr{XExtData}   # hook for extension to hang data
     private1::Ptr{XPrivate}
     fd::Cint                  # Network socket.
