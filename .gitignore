@@ -1,6 +1,9 @@
 # Specific files/directories
 work/
+deps/gendeps
 deps/deps.jl
+deps/types.jl
+deps/accessors.jl
 deps/downloads/
 deps/src/
 deps/usr/
