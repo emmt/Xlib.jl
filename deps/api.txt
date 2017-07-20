@@ -1,0 +1,874 @@
+# -*-julia-*-
+
+const _KeyCode = (NeedWidePrototypes ? Cuint : KeyCode)
+
+Ptr{XFontStruct} XLoadQueryFont(dpy::Ptr{Display}, name::Ptr{Cchar});
+
+Ptr{XFontStruct} XQueryFont(dpy::Ptr{Display}, font_ID::XID);
+
+Ptr{XTimeCoord} XGetMotionEvents(dpy::Ptr{Display}, w::Window, start::Time, stop::Time, nevents_return::Ptr{Cint});
+
+Ptr{XModifierKeymap} XDeleteModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::_KeyCode, modifier::Cint);
+
+Ptr{XModifierKeymap} XGetModifierMapping(dpy::Ptr{Display});
+
+Ptr{XModifierKeymap} XInsertModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::_KeyCode, modifier::Cint);
+
+Ptr{XModifierKeymap} XNewModifiermap(max_keys_per_mod::Cint);
+
+Ptr{XImage} XCreateImage(dpy::Ptr{Display}, visual::Ptr{Visual}, depth::Cuint, format::Cint, offset::Cint, data::Ptr{Cchar}, width::Cuint, height::Cuint, bitmap_pad::Cint, bytes_per_line::Cint);
+
+Status XInitImage(img::Ptr{XImage});
+
+Ptr{XImage} XGetImage(dpy::Ptr{Display}, d::Drawable, x::Cint, y::Cint, width::Cuint, height::Cuint, plane_mask::Culong, format::Cint);
+
+Ptr{XImage} XGetSubImage(dpy::Ptr{Display}, d::Drawable, x::Cint, y::Cint, width::Cuint, height::Cuint, plane_mask::Culong, format::Cint, dest_img::Ptr{XImage}, dest_x::Cint, dest_y::Cint);
+
+
+# X function declarations.
+
+Ptr{Display} XOpenDisplay(display_name::Ptr{Cchar});
+
+Void XrmInitialize();
+
+Ptr{Cchar} XFetchBytes(dpy::Ptr{Display}, nbytes_return::Ptr{Cint});
+
+Ptr{Cchar} XFetchBuffer(dpy::Ptr{Display}, nbytes_return::Ptr{Cint}, buffer::Cint);
+
+Ptr{Cchar} XGetAtomName(dpy::Ptr{Display}, atom::Atom);
+
+Status XGetAtomNames(dpy::Ptr{Display}, atoms::Ptr{Atom}, count::Cint, names_return::Ptr{Ptr{Cchar}});
+
+Ptr{Cchar} XGetDefault(dpy::Ptr{Display}, program::Ptr{Cchar}, option::Ptr{Cchar});
+
+Ptr{Cchar} XDisplayName(string::Ptr{Cchar});
+
+Ptr{Cchar} XKeysymToString(keysym::KeySym);
+
+# FIXME: Cint (*XSynchronize(dpy::Ptr{Display}, onoff::_Bool))(dpy::Ptr{Display});
+
+# FIXME: Cint (*XSetAfterFunction(dpy::Ptr{Display}, Cint (*procedure) (dpy::Ptr{Display})))(dpy::Ptr{Display});
+
+Atom XInternAtom(dpy::Ptr{Display}, atom_name::Ptr{Cchar}, only_if_exists::_Bool);
+
+Status XInternAtoms(dpy::Ptr{Display}, names::Ptr{Ptr{Cchar}}, count::Cint, onlyIfExists::_Bool, atoms_return::Ptr{Atom});
+
+Colormap XCopyColormapAndFree(dpy::Ptr{Display}, colormap::Colormap);
+
+Colormap XCreateColormap(dpy::Ptr{Display}, w::Window, visual::Ptr{Visual}, alloc::Cint);
+
+Cursor XCreatePixmapCursor(dpy::Ptr{Display}, source::Pixmap, mask::Pixmap, foreground_color::Ptr{XColor}, background_color::Ptr{XColor}, x::Cuint, y::Cuint);
+
+Cursor XCreateGlyphCursor(dpy::Ptr{Display}, source_font::Font, mask_font::Font, source_char::Cuint, mask_char::Cuint, foreground_color::Ptr{XColor}, background_color::Ptr{XColor});
+
+Cursor XCreateFontCursor(dpy::Ptr{Display}, shape::Cuint);
+
+Font XLoadFont(dpy::Ptr{Display}, name::Ptr{Cchar});
+
+GC XCreateGC(dpy::Ptr{Display}, d::Drawable, valuemask::Culong, values::Ptr{XGCValues});
+
+GContext XGContextFromGC(gc::GC);
+
+Void XFlushGC(dpy::Ptr{Display}, gc::GC);
+
+Pixmap XCreatePixmap(dpy::Ptr{Display}, d::Drawable, width::Cuint, height::Cuint, depth::Cuint);
+
+Pixmap XCreateBitmapFromData(dpy::Ptr{Display}, d::Drawable, data::Ptr{Cchar}, width::Cuint, height::Cuint);
+
+Pixmap XCreatePixmapFromBitmapData(dpy::Ptr{Display}, d::Drawable, data::Ptr{Cchar}, width::Cuint, height::Cuint, fg::Culong, bg::Culong, depth::Cuint);
+
+Window XCreateSimpleWindow(dpy::Ptr{Display}, parent::Window, x::Cint, y::Cint, width::Cuint, height::Cuint, border_width::Cuint, border::Culong, background::Culong);
+
+Window XGetSelectionOwner(dpy::Ptr{Display}, selection::Atom);
+
+Window XCreateWindow(dpy::Ptr{Display}, parent::Window, x::Cint, y::Cint, width::Cuint, height::Cuint, border_width::Cuint, depth::Cint, class::Cuint, visual::Ptr{Visual}, valuemask::Culong, attributes::Ptr{XSetWindowAttributes});
+
+Ptr{Colormap} XListInstalledColormaps(dpy::Ptr{Display}, w::Window, num_return::Ptr{Cint});
+
+Ptr{Ptr{Cchar}} XListFonts(dpy::Ptr{Display}, pattern::Ptr{Cchar}, maxnames::Cint, actual_count_return::Ptr{Cint});
+
+Ptr{Ptr{Cchar}} XListFontsWithInfo(dpy::Ptr{Display}, pattern::Ptr{Cchar}, maxnames::Cint, count_return::Ptr{Cint}, info_return::Ptr{Ptr{XFontStruct}});
+
+Ptr{Ptr{Cchar}} XGetFontPath(dpy::Ptr{Display}, npaths_return::Ptr{Cint});
+
+Ptr{Ptr{Cchar}} XListExtensions(dpy::Ptr{Display}, nextensions_return::Ptr{Cint});
+
+Ptr{Atom} XListProperties(dpy::Ptr{Display}, w::Window, num_prop_return::Ptr{Cint});
+
+Ptr{XHostAddress} XListHosts(dpy::Ptr{Display}, nhosts_return::Ptr{Cint}, state_return::Ptr{_Bool});
+
+# FIXME: XKeycodeToKeysym is deprecated, use XkbKeycodeToKeysym instead
+KeySym XKeycodeToKeysym(dpy::Ptr{Display}, keycode::_KeyCode, index::Cint);
+
+KeySym XLookupKeysym(key_event::Ptr{XKeyEvent}, index::Cint);
+
+Ptr{KeySym} XGetKeyboardMapping(dpy::Ptr{Display}, first_keycode::_KeyCode, keycode_count::Cint, keysyms_per_keycode_return::Ptr{Cint});
+
+KeySym XStringToKeysym(string::Ptr{Cchar});
+
+Clong XMaxRequestSize(dpy::Ptr{Display});
+
+Clong XExtendedMaxRequestSize(dpy::Ptr{Display});
+
+Ptr{Cchar} XResourceManagerString(dpy::Ptr{Display});
+
+Ptr{Cchar} XScreenResourceString(screen::Ptr{Screen});
+
+Culong XDisplayMotionBufferSize(dpy::Ptr{Display});
+
+VisualID XVisualIDFromVisual(visual::Ptr{Visual});
+
+
+# Multithread routines
+
+Status XInitThreads();
+
+Void XLockDisplay(dpy::Ptr{Display});
+
+Void XUnlockDisplay(dpy::Ptr{Display});
+
+
+# Routines for dealing with extensions
+
+Ptr{XExtCodes} XInitExtension(dpy::Ptr{Display}, name::Ptr{Cchar});
+
+Ptr{XExtCodes} XAddExtension(dpy::Ptr{Display});
+
+Ptr{XExtData} XFindOnExtensionList(structure::Ptr{Ptr{XExtData}}, number::Cint);
+
+Ptr{Ptr{XExtData}} XEHeadOfExtensionList(object::XEDataObject);
+
+
+# These are routines for which there are also macros
+
+Window XRootWindow(dpy::Ptr{Display}, screen_number::Cint);
+
+Window XDefaultRootWindow(dpy::Ptr{Display});
+
+Window XRootWindowOfScreen(screen::Ptr{Screen});
+
+Ptr{Visual} XDefaultVisual(dpy::Ptr{Display}, screen_number::Cint);
+
+Ptr{Visual} XDefaultVisualOfScreen(screen::Ptr{Screen});
+
+GC XDefaultGC(dpy::Ptr{Display}, screen_number::Cint);
+
+GC XDefaultGCOfScreen(screen::Ptr{Screen});
+
+Culong XBlackPixel(dpy::Ptr{Display}, screen_number::Cint);
+
+Culong XWhitePixel(dpy::Ptr{Display}, screen_number::Cint);
+
+Culong XAllPlanes();
+
+Culong XBlackPixelOfScreen(screen::Ptr{Screen});
+
+Culong XWhitePixelOfScreen(screen::Ptr{Screen});
+
+Culong XNextRequest(dpy::Ptr{Display});
+
+Culong XLastKnownRequestProcessed(dpy::Ptr{Display});
+
+Ptr{Cchar} XServerVendor(dpy::Ptr{Display});
+
+Ptr{Cchar} XDisplayString(dpy::Ptr{Display});
+
+Colormap XDefaultColormap(dpy::Ptr{Display}, screen_number::Cint);
+
+Colormap XDefaultColormapOfScreen(screen::Ptr{Screen});
+
+Ptr{Display} XDisplayOfScreen(screen::Ptr{Screen});
+
+Ptr{Screen} XScreenOfDisplay(dpy::Ptr{Display}, screen_number::Cint);
+
+Ptr{Screen} XDefaultScreenOfDisplay(dpy::Ptr{Display});
+
+Clong XEventMaskOfScreen(screen::Ptr{Screen});
+
+Cint XScreenNumberOfScreen(screen::Ptr{Screen});
+
+# FIXME:
+#     typedef int (*XErrorHandler) (      /* WARNING, this type not in Xlib spec */
+#         Ptr{Display} /* display */,
+#         Ptr{XErrorEvent} /* error_event */
+#     );
+
+const XErrorHandler = Cfunc
+
+XErrorHandler XSetErrorHandler (handler::XErrorHandler);
+
+# FIXME:
+#     typedef int (*XIOErrorHandler) (    /* WARNING, this type not in Xlib spec */
+#         Ptr{Display} /* display */
+#     );
+const XIOErrorHandler = Cfunc
+
+XIOErrorHandler XSetIOErrorHandler (handler::XIOErrorHandler);
+
+Ptr{XPixmapFormatValues} XListPixmapFormats(dpy::Ptr{Display}, count_return::Ptr{Cint});
+
+Ptr{Cint} XListDepths(dpy::Ptr{Display}, screen_number::Cint, count_return::Ptr{Cint});
+
+
+# ICCCM routines for things that don't require special include files; other
+# declarations are given in Xutil.h
+
+Status XReconfigureWMWindow(dpy::Ptr{Display}, w::Window, screen_number::Cint, mask::Cuint, changes::Ptr{XWindowChanges});
+
+Status XGetWMProtocols(dpy::Ptr{Display}, w::Window, protocols_return::Ptr{Ptr{Atom}}, count_return::Ptr{Cint});
+
+Status XSetWMProtocols(dpy::Ptr{Display}, w::Window, protocols::Ptr{Atom}, count::Cint);
+
+Status XIconifyWindow(dpy::Ptr{Display}, w::Window, screen_number::Cint);
+
+Status XWithdrawWindow(dpy::Ptr{Display}, w::Window, screen_number::Cint);
+
+Status XGetCommand(dpy::Ptr{Display}, w::Window, argv_return::Ptr{Ptr{Ptr{Cchar}}}, argc_return::Ptr{Cint});
+
+Status XGetWMColormapWindows(dpy::Ptr{Display}, w::Window, windows_return::Ptr{Ptr{Window}}, count_return::Ptr{Cint});
+
+Status XSetWMColormapWindows(dpy::Ptr{Display}, w::Window, colormap_windows::Ptr{Window}, count::Cint);
+
+Void XFreeStringList(list::Ptr{Ptr{Cchar}});
+
+Cint XSetTransientForHint(dpy::Ptr{Display}, w::Window, prop_window::Window);
+
+
+# The following are given in alphabetical order
+
+Cint XActivateScreenSaver(dpy::Ptr{Display});
+
+Cint XAddHost(dpy::Ptr{Display}, host::Ptr{XHostAddress});
+
+Cint XAddHosts(dpy::Ptr{Display}, hosts::Ptr{XHostAddress}, num_hosts::Cint);
+
+Cint XAddToExtensionList(structure::Ptr{Ptr{XExtData}}, ext_data::Ptr{XExtData});
+
+Cint XAddToSaveSet(dpy::Ptr{Display}, w::Window);
+
+Status XAllocColor(dpy::Ptr{Display}, colormap::Colormap, screen_in_out::Ptr{XColor});
+
+Status XAllocColorCells(dpy::Ptr{Display}, colormap::Colormap, contig::_Bool, plane_masks_return::Ptr{Culong}, nplanes::Cuint, pixels_return::Ptr{Culong}, npixels::Cuint);
+
+Status XAllocColorPlanes(dpy::Ptr{Display}, colormap::Colormap, contig::_Bool, pixels_return::Ptr{Culong}, ncolors::Cint, nreds::Cint, ngreens::Cint, nblues::Cint, rmask_return::Ptr{Culong}, gmask_return::Ptr{Culong}, bmask_return::Ptr{Culong});
+
+Status XAllocNamedColor(dpy::Ptr{Display}, colormap::Colormap, color_name::Ptr{Cchar}, screen_def_return::Ptr{XColor}, exact_def_return::Ptr{XColor});
+
+Cint XAllowEvents(dpy::Ptr{Display}, event_mode::Cint, time::Time);
+
+Cint XAutoRepeatOff(dpy::Ptr{Display});
+
+Cint XAutoRepeatOn(dpy::Ptr{Display});
+
+Cint XBell(dpy::Ptr{Display}, percent::Cint);
+
+Cint XBitmapBitOrder(dpy::Ptr{Display});
+
+Cint XBitmapPad(dpy::Ptr{Display});
+
+Cint XBitmapUnit(dpy::Ptr{Display});
+
+Cint XCellsOfScreen(screen::Ptr{Screen});
+
+Cint XChangeActivePointerGrab(dpy::Ptr{Display}, event_mask::Cuint, cursor::Cursor, time::Time);
+
+Cint XChangeGC(dpy::Ptr{Display}, gc::GC, valuemask::Culong, values::Ptr{XGCValues});
+
+Cint XChangeKeyboardControl(dpy::Ptr{Display}, value_mask::Culong, values::Ptr{XKeyboardControl});
+
+Cint XChangeKeyboardMapping(dpy::Ptr{Display}, first_keycode::Cint, keysyms_per_keycode::Cint, keysyms::Ptr{KeySym}, num_codes::Cint);
+
+Cint XChangePointerControl(dpy::Ptr{Display}, do_accel::_Bool, do_threshold::_Bool, accel_numerator::Cint, accel_denominator::Cint, threshold::Cint);
+
+Cint XChangeProperty(dpy::Ptr{Display}, w::Window, property::Atom, _type::Atom, format::Cint, mode::Cint, data::Ptr{Cuchar}, nelements::Cint);
+
+Cint XChangeSaveSet(dpy::Ptr{Display}, w::Window, change_mode::Cint);
+
+Cint XChangeWindowAttributes(dpy::Ptr{Display}, w::Window, valuemask::Culong, attributes::Ptr{XSetWindowAttributes});
+
+# FIXME: _Bool XCheckIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
+_Bool XCheckIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer);
+
+_Bool XCheckMaskEvent(dpy::Ptr{Display}, event_mask::Clong, event_return::Ptr{XEvent});
+
+_Bool XCheckTypedEvent(dpy::Ptr{Display}, event_type::Cint, event_return::Ptr{XEvent});
+
+_Bool XCheckTypedWindowEvent(dpy::Ptr{Display}, w::Window, event_type::Cint, event_return::Ptr{XEvent});
+
+_Bool XCheckWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Clong, event_return::Ptr{XEvent});
+
+Cint XCirculateSubwindows(dpy::Ptr{Display}, w::Window, direction::Cint);
+
+Cint XCirculateSubwindowsDown(dpy::Ptr{Display}, w::Window);
+
+Cint XCirculateSubwindowsUp(dpy::Ptr{Display}, w::Window);
+
+Cint XClearArea(dpy::Ptr{Display}, w::Window, x::Cint, y::Cint, width::Cuint, height::Cuint, exposures::_Bool);
+
+Cint XClearWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XCloseDisplay(dpy::Ptr{Display});
+
+Cint XConfigureWindow(dpy::Ptr{Display}, w::Window, value_mask::Cuint, values::Ptr{XWindowChanges});
+
+Cint XConnectionNumber(dpy::Ptr{Display});
+
+Cint XConvertSelection(dpy::Ptr{Display}, selection::Atom, target::Atom, property::Atom, requestor::Window, time::Time);
+
+Cint XCopyArea(dpy::Ptr{Display}, src::Drawable, dest::Drawable, gc::GC, src_x::Cint, src_y::Cint, width::Cuint, height::Cuint, dest_x::Cint, dest_y::Cint);
+
+Cint XCopyGC(dpy::Ptr{Display}, src::GC, valuemask::Culong, dest::GC);
+
+Cint XCopyPlane(dpy::Ptr{Display}, src::Drawable, dest::Drawable, gc::GC, src_x::Cint, src_y::Cint, width::Cuint, height::Cuint, dest_x::Cint, dest_y::Cint, plane::Culong);
+
+Cint XDefaultDepth(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDefaultDepthOfScreen(screen::Ptr{Screen});
+
+Cint XDefaultScreen(dpy::Ptr{Display});
+
+Cint XDefineCursor(dpy::Ptr{Display}, w::Window, cursor::Cursor);
+
+Cint XDeleteProperty(dpy::Ptr{Display}, w::Window, property::Atom);
+
+Cint XDestroyWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XDestroySubwindows(dpy::Ptr{Display}, w::Window);
+
+Cint XDoesBackingStore(screen::Ptr{Screen});
+
+_Bool XDoesSaveUnders(screen::Ptr{Screen});
+
+Cint XDisableAccessControl(dpy::Ptr{Display});
+
+Cint XDisplayCells(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDisplayHeight(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDisplayHeightMM(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDisplayKeycodes(dpy::Ptr{Display}, min_keycodes_return::Ptr{Cint}, max_keycodes_return::Ptr{Cint});
+
+Cint XDisplayPlanes(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDisplayWidth(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDisplayWidthMM(dpy::Ptr{Display}, screen_number::Cint);
+
+Cint XDrawArc(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, width::Cuint, height::Cuint, angle1::Cint, angle2::Cint);
+
+Cint XDrawArcs(dpy::Ptr{Display}, d::Drawable, gc::GC, arcs::Ptr{XArc}, narcs::Cint);
+
+Cint XDrawImageString(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, string::Ptr{Cchar}, length::Cint);
+
+Cint XDrawImageString16(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, string::Ptr{XChar2b}, length::Cint);
+
+Cint XDrawLine(dpy::Ptr{Display}, d::Drawable, gc::GC, x1::Cint, y1::Cint, x2::Cint, y2::Cint);
+
+Cint XDrawLines(dpy::Ptr{Display}, d::Drawable, gc::GC, points::Ptr{XPoint}, npoints::Cint, mode::Cint);
+
+Cint XDrawPoint(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint);
+
+Cint XDrawPoints(dpy::Ptr{Display}, d::Drawable, gc::GC, points::Ptr{XPoint}, npoints::Cint, mode::Cint);
+
+Cint XDrawRectangle(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, width::Cuint, height::Cuint);
+
+Cint XDrawRectangles(dpy::Ptr{Display}, d::Drawable, gc::GC, rectangles::Ptr{XRectangle}, nrectangles::Cint);
+
+Cint XDrawSegments(dpy::Ptr{Display}, d::Drawable, gc::GC, segments::Ptr{XSegment}, nsegments::Cint);
+
+Cint XDrawString(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, string::Ptr{Cchar}, length::Cint);
+
+Cint XDrawString16(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, string::Ptr{XChar2b}, length::Cint);
+
+Cint XDrawText(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, items::Ptr{XTextItem}, nitems::Cint);
+
+Cint XDrawText16(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, items::Ptr{XTextItem16}, nitems::Cint);
+
+Cint XEnableAccessControl(dpy::Ptr{Display});
+
+Cint XEventsQueued(dpy::Ptr{Display}, mode::Cint);
+
+Status XFetchName(dpy::Ptr{Display}, w::Window, window_name_return::Ptr{Ptr{Cchar}});
+
+Cint XFillArc(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, width::Cuint, height::Cuint, angle1::Cint, angle2::Cint);
+
+Cint XFillArcs(dpy::Ptr{Display}, d::Drawable, gc::GC, arcs::Ptr{XArc}, narcs::Cint);
+
+Cint XFillPolygon(dpy::Ptr{Display}, d::Drawable, gc::GC, points::Ptr{XPoint}, npoints::Cint, shape::Cint, mode::Cint);
+
+Cint XFillRectangle(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, width::Cuint, height::Cuint);
+
+Cint XFillRectangles(dpy::Ptr{Display}, d::Drawable, gc::GC, rectangles::Ptr{XRectangle}, nrectangles::Cint);
+
+Cint XFlush(dpy::Ptr{Display});
+
+Cint XForceScreenSaver(dpy::Ptr{Display}, mode::Cint);
+
+Cint XFree(data::Ptr{Void});
+
+Cint XFreeColormap(dpy::Ptr{Display}, colormap::Colormap);
+
+Cint XFreeColors(dpy::Ptr{Display}, colormap::Colormap, pixels::Ptr{Culong}, npixels::Cint, planes::Culong);
+
+Cint XFreeCursor(dpy::Ptr{Display}, cursor::Cursor);
+
+Cint XFreeExtensionList(list::Ptr{Ptr{Cchar}});
+
+Cint XFreeFont(dpy::Ptr{Display}, font_struct::Ptr{XFontStruct});
+
+Cint XFreeFontInfo(names::Ptr{Ptr{Cchar}}, free_info::Ptr{XFontStruct}, actual_count::Cint);
+
+Cint XFreeFontNames(list::Ptr{Ptr{Cchar}});
+
+Cint XFreeFontPath(list::Ptr{Ptr{Cchar}});
+
+Cint XFreeGC(dpy::Ptr{Display}, gc::GC);
+
+Cint XFreeModifiermap(modmap::Ptr{XModifierKeymap});
+
+Cint XFreePixmap(dpy::Ptr{Display}, pixmap::Pixmap);
+
+Cint XGeometry(dpy::Ptr{Display}, screen::Cint, position::Ptr{Cchar}, default_position::Ptr{Cchar}, bwidth::Cuint, fwidth::Cuint, fheight::Cuint, xadder::Cint, yadder::Cint, x_return::Ptr{Cint}, y_return::Ptr{Cint}, width_return::Ptr{Cint}, height_return::Ptr{Cint});
+
+Cint XGetErrorDatabaseText(dpy::Ptr{Display}, name::Ptr{Cchar}, message::Ptr{Cchar}, default_string::Ptr{Cchar}, buffer_return::Ptr{Cchar}, length::Cint);
+
+Cint XGetErrorText(dpy::Ptr{Display}, code::Cint, buffer_return::Ptr{Cchar}, length::Cint);
+
+_Bool XGetFontProperty(font_struct::Ptr{XFontStruct}, atom::Atom, value_return::Ptr{Culong});
+
+Status XGetGCValues(dpy::Ptr{Display}, gc::GC, valuemask::Culong, values_return::Ptr{XGCValues});
+
+Status XGetGeometry(dpy::Ptr{Display}, d::Drawable, root_return::Ptr{Window}, x_return::Ptr{Cint}, y_return::Ptr{Cint}, width_return::Ptr{Cuint}, height_return::Ptr{Cuint}, border_width_return::Ptr{Cuint}, depth_return::Ptr{Cuint});
+
+Status XGetIconName(dpy::Ptr{Display}, w::Window, icon_name_return::Ptr{Ptr{Cchar}});
+
+Cint XGetInputFocus(dpy::Ptr{Display}, focus_return::Ptr{Window}, revert_to_return::Ptr{Cint});
+
+Cint XGetKeyboardControl(dpy::Ptr{Display}, values_return::Ptr{XKeyboardState});
+
+Cint XGetPointerControl(dpy::Ptr{Display}, accel_numerator_return::Ptr{Cint}, accel_denominator_return::Ptr{Cint}, threshold_return::Ptr{Cint});
+
+Cint XGetPointerMapping(dpy::Ptr{Display}, map_return::Ptr{Cuchar}, nmap::Cint);
+
+Cint XGetScreenSaver(dpy::Ptr{Display}, timeout_return::Ptr{Cint}, interval_return::Ptr{Cint}, prefer_blanking_return::Ptr{Cint}, allow_exposures_return::Ptr{Cint});
+
+Status XGetTransientForHint(dpy::Ptr{Display}, w::Window, prop_window_return::Ptr{Window});
+
+Cint XGetWindowProperty(dpy::Ptr{Display}, w::Window, property::Atom, long_offset::Clong, long_length::Clong, delete::_Bool, req_type::Atom, actual_type_return::Ptr{Atom}, actual_format_return::Ptr{Cint}, nitems_return::Ptr{Culong}, bytes_after_return::Ptr{Culong}, prop_return::Ptr{Ptr{Cuchar}});
+
+Status XGetWindowAttributes(dpy::Ptr{Display}, w::Window, window_attributes_return::Ptr{XWindowAttributes});
+
+Cint XGrabButton(dpy::Ptr{Display}, button::Cuint, modifiers::Cuint, grab_window::Window, owner_events::_Bool, event_mask::Cuint, pointer_mode::Cint, keyboard_mode::Cint, confine_to::Window, cursor::Cursor);
+
+Cint XGrabKey(dpy::Ptr{Display}, keycode::Cint, modifiers::Cuint, grab_window::Window, owner_events::_Bool, pointer_mode::Cint, keyboard_mode::Cint);
+
+Cint XGrabKeyboard(dpy::Ptr{Display}, grab_window::Window, owner_events::_Bool, pointer_mode::Cint, keyboard_mode::Cint, time::Time);
+
+Cint XGrabPointer(dpy::Ptr{Display}, grab_window::Window, owner_events::_Bool, event_mask::Cuint, pointer_mode::Cint, keyboard_mode::Cint, confine_to::Window, cursor::Cursor, time::Time);
+
+Cint XGrabServer(dpy::Ptr{Display});
+
+Cint XHeightMMOfScreen(screen::Ptr{Screen});
+
+Cint XHeightOfScreen(screen::Ptr{Screen});
+
+# FIXME: Cint XIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
+Cint XIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer);
+
+Cint XImageByteOrder(dpy::Ptr{Display});
+
+Cint XInstallColormap(dpy::Ptr{Display}, colormap::Colormap);
+
+KeyCode XKeysymToKeycode(dpy::Ptr{Display}, keysym::KeySym);
+
+Cint XKillClient(dpy::Ptr{Display}, resource::XID);
+
+Status XLookupColor(dpy::Ptr{Display}, colormap::Colormap, color_name::Ptr{Cchar}, exact_def_return::Ptr{XColor}, screen_def_return::Ptr{XColor});
+
+Cint XLowerWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XMapRaised(dpy::Ptr{Display}, w::Window);
+
+Cint XMapSubwindows(dpy::Ptr{Display}, w::Window);
+
+Cint XMapWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XMaskEvent(dpy::Ptr{Display}, event_mask::Clong, event_return::Ptr{XEvent});
+
+Cint XMaxCmapsOfScreen(screen::Ptr{Screen});
+
+Cint XMinCmapsOfScreen(screen::Ptr{Screen});
+
+Cint XMoveResizeWindow(dpy::Ptr{Display}, w::Window, x::Cint, y::Cint, width::Cuint, height::Cuint);
+
+Cint XMoveWindow(dpy::Ptr{Display}, w::Window, x::Cint, y::Cint);
+
+Cint XNextEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent});
+
+Cint XNoOp(dpy::Ptr{Display});
+
+Status XParseColor(dpy::Ptr{Display}, colormap::Colormap, spec::Ptr{Cchar}, exact_def_return::Ptr{XColor});
+
+Cint XParseGeometry(parsestring::Ptr{Cchar}, x_return::Ptr{Cint}, y_return::Ptr{Cint}, width_return::Ptr{Cuint}, height_return::Ptr{Cuint});
+
+Cint XPeekEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent});
+
+# FIXME: Cint XPeekIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
+Cint XPeekIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer);
+
+Cint XPending(dpy::Ptr{Display});
+
+Cint XPlanesOfScreen(screen::Ptr{Screen});
+
+Cint XProtocolRevision(dpy::Ptr{Display});
+
+Cint XProtocolVersion(dpy::Ptr{Display});
+
+Cint XPutBackEvent(dpy::Ptr{Display}, event::Ptr{XEvent});
+
+Cint XPutImage(dpy::Ptr{Display}, d::Drawable, gc::GC, img::Ptr{XImage}, src_x::Cint, src_y::Cint, dest_x::Cint, dest_y::Cint, width::Cuint, height::Cuint);
+
+Cint XQLength(dpy::Ptr{Display});
+
+Status XQueryBestCursor(dpy::Ptr{Display}, d::Drawable, width::Cuint, height::Cuint, width_return::Ptr{Cuint}, height_return::Ptr{Cuint});
+
+Status XQueryBestSize(dpy::Ptr{Display}, class::Cint, which_screen::Drawable, width::Cuint, height::Cuint, width_return::Ptr{Cuint}, height_return::Ptr{Cuint});
+
+Status XQueryBestStipple(dpy::Ptr{Display}, which_screen::Drawable, width::Cuint, height::Cuint, width_return::Ptr{Cuint}, height_return::Ptr{Cuint});
+
+Status XQueryBestTile(dpy::Ptr{Display}, which_screen::Drawable, width::Cuint, height::Cuint, width_return::Ptr{Cuint}, height_return::Ptr{Cuint});
+
+Cint XQueryColor(dpy::Ptr{Display}, colormap::Colormap, def_in_out::Ptr{XColor});
+
+Cint XQueryColors(dpy::Ptr{Display}, colormap::Colormap, defs_in_out::Ptr{XColor}, ncolors::Cint);
+
+_Bool XQueryExtension(dpy::Ptr{Display}, name::Ptr{Cchar}, major_opcode_return::Ptr{Cint}, first_event_return::Ptr{Cint}, first_error_return::Ptr{Cint});
+
+Cint XQueryKeymap(dpy::Ptr{Display}, keys::Cbuf32char);
+
+_Bool XQueryPointer(dpy::Ptr{Display}, w::Window, root_return::Ptr{Window}, child_return::Ptr{Window}, root_x_return::Ptr{Cint}, root_y_return::Ptr{Cint}, win_x_return::Ptr{Cint}, win_y_return::Ptr{Cint}, mask_return::Ptr{Cuint});
+
+Cint XQueryTextExtents(dpy::Ptr{Display}, font_ID::XID, string::Ptr{Cchar}, nchars::Cint, direction_return::Ptr{Cint}, font_ascent_return::Ptr{Cint}, font_descent_return::Ptr{Cint}, overall_return::Ptr{XCharStruct});
+
+Cint XQueryTextExtents16(dpy::Ptr{Display}, font_ID::XID, string::Ptr{XChar2b}, nchars::Cint, direction_return::Ptr{Cint}, font_ascent_return::Ptr{Cint}, font_descent_return::Ptr{Cint}, overall_return::Ptr{XCharStruct});
+
+Status XQueryTree(dpy::Ptr{Display}, w::Window, root_return::Ptr{Window}, parent_return::Ptr{Window}, children_return::Ptr{Ptr{Window}}, nchildren_return::Ptr{Cuint});
+
+Cint XRaiseWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XReadBitmapFile(dpy::Ptr{Display}, d::Drawable, filename::Ptr{Cchar}, width_return::Ptr{Cuint}, height_return::Ptr{Cuint}, bitmap_return::Ptr{Pixmap}, x_hot_return::Ptr{Cint}, y_hot_return::Ptr{Cint});
+
+Cint XReadBitmapFileData(filename::Ptr{Cchar}, width_return::Ptr{Cuint}, height_return::Ptr{Cuint}, data_return::Ptr{Ptr{Cuchar}}, x_hot_return::Ptr{Cint}, y_hot_return::Ptr{Cint});
+
+Cint XRebindKeysym(dpy::Ptr{Display}, keysym::KeySym, list::Ptr{KeySym}, mod_count::Cint, string::Ptr{Cuchar}, bytes_string::Cint);
+
+Cint XRecolorCursor(dpy::Ptr{Display}, cursor::Cursor, foreground_color::Ptr{XColor}, background_color::Ptr{XColor});
+
+Cint XRefreshKeyboardMapping(event_map::Ptr{XMappingEvent});
+
+Cint XRemoveFromSaveSet(dpy::Ptr{Display}, w::Window);
+
+Cint XRemoveHost(dpy::Ptr{Display}, host::Ptr{XHostAddress});
+
+Cint XRemoveHosts(dpy::Ptr{Display}, hosts::Ptr{XHostAddress}, num_hosts::Cint);
+
+Cint XReparentWindow(dpy::Ptr{Display}, w::Window, parent::Window, x::Cint, y::Cint);
+
+Cint XResetScreenSaver(dpy::Ptr{Display});
+
+Cint XResizeWindow(dpy::Ptr{Display}, w::Window, width::Cuint, height::Cuint);
+
+Cint XRestackWindows(dpy::Ptr{Display}, windows::Ptr{Window}, nwindows::Cint);
+
+Cint XRotateBuffers(dpy::Ptr{Display}, rotate::Cint);
+
+Cint XRotateWindowProperties(dpy::Ptr{Display}, w::Window, properties::Ptr{Atom}, num_prop::Cint, npositions::Cint);
+
+Cint XScreenCount(dpy::Ptr{Display});
+
+Cint XSelectInput(dpy::Ptr{Display}, w::Window, event_mask::Clong);
+
+Status XSendEvent(dpy::Ptr{Display}, w::Window, propagate::_Bool, event_mask::Clong, event_send::Ptr{XEvent});
+
+Cint XSetAccessControl(dpy::Ptr{Display}, mode::Cint);
+
+Cint XSetArcMode(dpy::Ptr{Display}, gc::GC, arc_mode::Cint);
+
+Cint XSetBackground(dpy::Ptr{Display}, gc::GC, background::Culong);
+
+Cint XSetClipMask(dpy::Ptr{Display}, gc::GC, pixmap::Pixmap);
+
+Cint XSetClipOrigin(dpy::Ptr{Display}, gc::GC, clip_x_origin::Cint, clip_y_origin::Cint);
+
+Cint XSetClipRectangles(dpy::Ptr{Display}, gc::GC, clip_x_origin::Cint, clip_y_origin::Cint, rectangles::Ptr{XRectangle}, n::Cint, ordering::Cint);
+
+Cint XSetCloseDownMode(dpy::Ptr{Display}, close_mode::Cint);
+
+Cint XSetCommand(dpy::Ptr{Display}, w::Window, argv::Ptr{Ptr{Cchar}}, argc::Cint);
+
+Cint XSetDashes(dpy::Ptr{Display}, gc::GC, dash_offset::Cint, dash_list::Ptr{Cchar}, n::Cint);
+
+Cint XSetFillRule(dpy::Ptr{Display}, gc::GC, fill_rule::Cint);
+
+Cint XSetFillStyle(dpy::Ptr{Display}, gc::GC, fill_style::Cint);
+
+Cint XSetFont(dpy::Ptr{Display}, gc::GC, font::Font);
+
+Cint XSetFontPath(dpy::Ptr{Display}, directories::Ptr{Ptr{Cchar}}, ndirs::Cint);
+
+Cint XSetForeground(dpy::Ptr{Display}, gc::GC, foreground::Culong);
+
+Cint XSetFunction(dpy::Ptr{Display}, gc::GC, func::Cint);
+
+Cint XSetGraphicsExposures(dpy::Ptr{Display}, gc::GC, graphics_exposures::_Bool);
+
+Cint XSetIconName(dpy::Ptr{Display}, w::Window, icon_name::Ptr{Cchar});
+
+Cint XSetInputFocus(dpy::Ptr{Display}, focus::Window, revert_to::Cint, time::Time);
+
+Cint XSetLineAttributes(dpy::Ptr{Display}, gc::GC, line_width::Cuint, line_style::Cint, cap_style::Cint, join_style::Cint);
+
+Cint XSetModifierMapping(dpy::Ptr{Display}, modmap::Ptr{XModifierKeymap});
+
+Cint XSetPlaneMask(dpy::Ptr{Display}, gc::GC, plane_mask::Culong);
+
+Cint XSetPointerMapping(dpy::Ptr{Display}, map::Ptr{Cuchar}, nmap::Cint);
+
+Cint XSetScreenSaver(dpy::Ptr{Display}, timeout::Cint, interval::Cint, prefer_blanking::Cint, allow_exposures::Cint);
+
+Cint XSetSelectionOwner(dpy::Ptr{Display}, selection::Atom, owner::Window, time::Time);
+
+Cint XSetState(dpy::Ptr{Display}, gc::GC, foreground::Culong, background::Culong, func::Cint, plane_mask::Culong);
+
+Cint XSetStipple(dpy::Ptr{Display}, gc::GC, stipple::Pixmap);
+
+Cint XSetSubwindowMode(dpy::Ptr{Display}, gc::GC, subwindow_mode::Cint);
+
+Cint XSetTSOrigin(dpy::Ptr{Display}, gc::GC, ts_x_origin::Cint, ts_y_origin::Cint);
+
+Cint XSetTile(dpy::Ptr{Display}, gc::GC, tile::Pixmap);
+
+Cint XSetWindowBackground(dpy::Ptr{Display}, w::Window, background_pixel::Culong);
+
+Cint XSetWindowBackgroundPixmap(dpy::Ptr{Display}, w::Window, background_pixmap::Pixmap);
+
+Cint XSetWindowBorder(dpy::Ptr{Display}, w::Window, border_pixel::Culong);
+
+Cint XSetWindowBorderPixmap(dpy::Ptr{Display}, w::Window, border_pixmap::Pixmap);
+
+Cint XSetWindowBorderWidth(dpy::Ptr{Display}, w::Window, width::Cuint);
+
+Cint XSetWindowColormap(dpy::Ptr{Display}, w::Window, colormap::Colormap);
+
+Cint XStoreBuffer(dpy::Ptr{Display}, bytes::Ptr{Cchar}, nbytes::Cint, buffer::Cint);
+
+Cint XStoreBytes(dpy::Ptr{Display}, bytes::Ptr{Cchar}, nbytes::Cint);
+
+Cint XStoreColor(dpy::Ptr{Display}, colormap::Colormap, color::Ptr{XColor});
+
+Cint XStoreColors(dpy::Ptr{Display}, colormap::Colormap, color::Ptr{XColor}, ncolors::Cint);
+
+Cint XStoreName(dpy::Ptr{Display}, w::Window, window_name::Ptr{Cchar});
+
+Cint XStoreNamedColor(dpy::Ptr{Display}, colormap::Colormap, color::Ptr{Cchar}, pixel::Culong, flags::Cint);
+
+Cint XSync(dpy::Ptr{Display}, discard::_Bool);
+
+Cint XTextExtents(font_struct::Ptr{XFontStruct}, string::Ptr{Cchar}, nchars::Cint, direction_return::Ptr{Cint}, font_ascent_return::Ptr{Cint}, font_descent_return::Ptr{Cint}, overall_return::Ptr{XCharStruct});
+
+Cint XTextExtents16(font_struct::Ptr{XFontStruct}, string::Ptr{XChar2b}, nchars::Cint, direction_return::Ptr{Cint}, font_ascent_return::Ptr{Cint}, font_descent_return::Ptr{Cint}, overall_return::Ptr{XCharStruct});
+
+Cint XTextWidth(font_struct::Ptr{XFontStruct}, string::Ptr{Cchar}, count::Cint);
+
+Cint XTextWidth16(font_struct::Ptr{XFontStruct}, string::Ptr{XChar2b}, count::Cint);
+
+_Bool XTranslateCoordinates(dpy::Ptr{Display}, src_w::Window, dest_w::Window, src_x::Cint, src_y::Cint, dest_x_return::Ptr{Cint}, dest_y_return::Ptr{Cint}, child_return::Ptr{Window});
+
+Cint XUndefineCursor(dpy::Ptr{Display}, w::Window);
+
+Cint XUngrabButton(dpy::Ptr{Display}, button::Cuint, modifiers::Cuint, grab_window::Window);
+
+Cint XUngrabKey(dpy::Ptr{Display}, keycode::Cint, modifiers::Cuint, grab_window::Window);
+
+Cint XUngrabKeyboard(dpy::Ptr{Display}, time::Time);
+
+Cint XUngrabPointer(dpy::Ptr{Display}, time::Time);
+
+Cint XUngrabServer(dpy::Ptr{Display});
+
+Cint XUninstallColormap(dpy::Ptr{Display}, colormap::Colormap);
+
+Cint XUnloadFont(dpy::Ptr{Display}, font::Font);
+
+Cint XUnmapSubwindows(dpy::Ptr{Display}, w::Window);
+
+Cint XUnmapWindow(dpy::Ptr{Display}, w::Window);
+
+Cint XVendorRelease(dpy::Ptr{Display});
+
+Cint XWarpPointer(dpy::Ptr{Display}, src_w::Window, dest_w::Window, src_x::Cint, src_y::Cint, src_width::Cuint, src_height::Cuint, dest_x::Cint, dest_y::Cint);
+
+Cint XWidthMMOfScreen(screen::Ptr{Screen});
+
+Cint XWidthOfScreen(screen::Ptr{Screen});
+
+Cint XWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Clong, event_return::Ptr{XEvent});
+
+Cint XWriteBitmapFile(dpy::Ptr{Display}, filename::Ptr{Cchar}, bitmap::Pixmap, width::Cuint, height::Cuint, x_hot::Cint, y_hot::Cint);
+
+_Bool XSupportsLocale();
+
+Ptr{Cchar} XSetLocaleModifiers(modifier_list::Ptr{Cchar});
+
+XOM XOpenOM(dpy::Ptr{Display}, rdb::Ptr{XrmHashBucketRec}, res_name::Ptr{Cchar}, res_class::Ptr{Cchar});
+
+Status XCloseOM(om::XOM);
+
+# FIXME: Ptr{Cchar} XSetOMValues(om::XOM, ...);
+
+# FIXME: Ptr{Cchar} XGetOMValues(om::XOM, ...);
+
+Ptr{Display} XDisplayOfOM(om::XOM);
+
+Ptr{Cchar} XLocaleOfOM(om::XOM);
+
+# FIXME: XOC XCreateOC(om::XOM, ...);
+
+Void XDestroyOC(oc::XOC);
+
+XOM XOMOfOC(oc::XOC);
+
+# FIXME: Ptr{Cchar} XSetOCValues(oc::XOC, ...);
+
+# FIXME: Ptr{Cchar} XGetOCValues(oc::XOC, ...);
+
+XFontSet XCreateFontSet(dpy::Ptr{Display}, base_font_name_list::Ptr{Cchar}, missing_charset_list::Ptr{Ptr{Ptr{Cchar}}}, missing_charset_count::Ptr{Cint}, def_string::Ptr{Ptr{Cchar}});
+
+Void XFreeFontSet(dpy::Ptr{Display}, font_set::XFontSet);
+
+Cint XFontsOfFontSet(font_set::XFontSet, font_struct_list::Ptr{Ptr{Ptr{XFontStruct}}}, font_name_list::Ptr{Ptr{Ptr{Cchar}}});
+
+Ptr{Cchar} XBaseFontNameListOfFontSet(font_set::XFontSet);
+
+Ptr{Cchar} XLocaleOfFontSet(font_set::XFontSet);
+
+_Bool XContextDependentDrawing(font_set::XFontSet);
+
+_Bool XDirectionalDependentDrawing(font_set::XFontSet);
+
+_Bool XContextualDrawing(font_set::XFontSet);
+
+Ptr{XFontSetExtents} XExtentsOfFontSet(font_set::XFontSet);
+
+Cint XmbTextEscapement(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint);
+
+Cint XwcTextEscapement(font_set::XFontSet, text::Ptr{Cwchar_t}, num_wchars::Cint);
+
+Cint Xutf8TextEscapement(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint);
+
+Cint XmbTextExtents(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Cint XwcTextExtents(font_set::XFontSet, text::Ptr{Cwchar_t}, num_wchars::Cint, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Cint Xutf8TextExtents(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Status XmbTextPerCharExtents(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint, ink_extents_buffer::Ptr{XRectangle}, logical_extents_buffer::Ptr{XRectangle}, buffer_size::Cint, num_chars::Ptr{Cint}, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Status XwcTextPerCharExtents(font_set::XFontSet, text::Ptr{Cwchar_t}, num_wchars::Cint, ink_extents_buffer::Ptr{XRectangle}, logical_extents_buffer::Ptr{XRectangle}, buffer_size::Cint, num_chars::Ptr{Cint}, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Status Xutf8TextPerCharExtents(font_set::XFontSet, text::Ptr{Cchar}, bytes_text::Cint, ink_extents_buffer::Ptr{XRectangle}, logical_extents_buffer::Ptr{XRectangle}, buffer_size::Cint, num_chars::Ptr{Cint}, overall_ink_return::Ptr{XRectangle}, overall_logical_return::Ptr{XRectangle});
+
+Void XmbDrawText(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, text_items::Ptr{XmbTextItem}, nitems::Cint);
+
+Void XwcDrawText(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, text_items::Ptr{XwcTextItem}, nitems::Cint);
+
+Void Xutf8DrawText(dpy::Ptr{Display}, d::Drawable, gc::GC, x::Cint, y::Cint, text_items::Ptr{XmbTextItem}, nitems::Cint);
+
+Void XmbDrawString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cchar}, bytes_text::Cint);
+
+Void XwcDrawString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cwchar_t}, num_wchars::Cint);
+
+Void Xutf8DrawString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cchar}, bytes_text::Cint);
+
+Void XmbDrawImageString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cchar}, bytes_text::Cint);
+
+Void XwcDrawImageString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cwchar_t}, num_wchars::Cint);
+
+Void Xutf8DrawImageString(dpy::Ptr{Display}, d::Drawable, font_set::XFontSet, gc::GC, x::Cint, y::Cint, text::Ptr{Cchar}, bytes_text::Cint);
+
+XIM XOpenIM(dpy::Ptr{Display}, rdb::Ptr{XrmHashBucketRec}, res_name::Ptr{Cchar}, res_class::Ptr{Cchar});
+
+Status XCloseIM(im::XIM);
+
+# FIXME: Ptr{Cchar} XGetIMValues(im::XIM, ...);
+
+# FIXME: Ptr{Cchar} XSetIMValues(im::XIM, ...);
+
+Ptr{Display} XDisplayOfIM(im::XIM);
+
+Ptr{Cchar} XLocaleOfIM(im::XIM);
+
+# FIXME: XIC XCreateIC(im::XIM, ...);
+
+Void XDestroyIC(ic::XIC);
+
+Void XSetICFocus(ic::XIC);
+
+Void XUnsetICFocus(ic::XIC);
+
+Ptr{Cwchar_t} XwcResetIC(ic::XIC);
+
+Ptr{Cchar} XmbResetIC(ic::XIC);
+
+Ptr{Cchar} Xutf8ResetIC(ic::XIC);
+
+# FIXME: Ptr{Cchar} XSetICValues(ic::XIC, ...);
+
+# FIXME: Ptr{Cchar} XGetICValues(ic::XIC, ...);
+
+XIM XIMOfIC(ic::XIC);
+
+_Bool XFilterEvent(event::Ptr{XEvent}, window::Window);
+
+Cint XmbLookupString(ic::XIC, event::Ptr{XKeyPressedEvent}, buffer_return::Ptr{Cchar}, bytes_buffer::Cint, keysym_return::Ptr{KeySym}, status_return::Ptr{Status});
+
+Cint XwcLookupString(ic::XIC, event::Ptr{XKeyPressedEvent}, buffer_return::Ptr{Cwchar_t}, wchars_buffer::Cint, keysym_return::Ptr{KeySym}, status_return::Ptr{Status});
+
+Cint Xutf8LookupString(ic::XIC, event::Ptr{XKeyPressedEvent}, buffer_return::Ptr{Cchar}, bytes_buffer::Cint, keysym_return::Ptr{KeySym}, status_return::Ptr{Status});
+
+# FIXME: XVaNestedList XVaCreateNestedList(unused::Cint, ...);
+
+# Internal connections for IMs
+
+_Bool XRegisterIMInstantiateCallback(dpy::Ptr{Display}, rdb::Ptr{XrmHashBucketRec}, res_name::Ptr{Cchar}, res_class::Ptr{Cchar}, callback::XIDProc, client_data::XPointer);
+
+_Bool XUnregisterIMInstantiateCallback(dpy::Ptr{Display}, rdb::Ptr{XrmHashBucketRec}, res_name::Ptr{Cchar}, res_class::Ptr{Cchar}, callback::XIDProc, client_data::XPointer);
+
+# FIXME:
+#     typedef Void (*XConnectionWatchProc)(
+#         dpy::Ptr{Display},
+#         client_data::XPointer,
+#         fd::Cint,
+#         opening::_Bool,   # open or close flag
+#         watch_data::Ptr{XPointer}# open sets, close uses
+#     );
+const XConnectionWatchProc = Cfunc
+
+Status XInternalConnectionNumbers(dpy::Ptr{Display}, fd_return::Ptr{Ptr{Cint}}, count_return::Ptr{Cint});
+
+Void XProcessInternalConnection(dpy::Ptr{Display}, fd::Cint);
+
+Status XAddConnectionWatch(dpy::Ptr{Display}, callback::XConnectionWatchProc, client_data::XPointer);
+
+Void XRemoveConnectionWatch(dpy::Ptr{Display}, callback::XConnectionWatchProc, client_data::XPointer);
+
+Void XSetAuthorization(name::Ptr{Cchar}, namelen::Cint, data::Ptr{Cchar}, datalen::Cint);
+
+Cint _Xmbtowc(wstr::Ptr{Cwchar_t}, str::Ptr{Cchar}, len::Cint);
+
+Cint _Xwctomb(str::Ptr{Cchar}, wc::Cwchar_t);
+
+_Bool XGetEventData(dpy::Ptr{Display}, cookie::Ptr{XGenericEventCookie});
+
+Void XFreeEventData(dpy::Ptr{Display}, cookie::Ptr{XGenericEventCookie});
