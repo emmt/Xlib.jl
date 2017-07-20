@@ -534,7 +534,7 @@ immutable XKeymapEvent <: AbstractXEvent
     send_event::_Bool     # true if this came from a SendEvent request
     display::Ptr{Display} # Display the event was read from
     window::Window
-    key_vector::Cchar32
+    key_vector::Cbuf32char
 end
 
 immutable XExposeEvent <: AbstractXEvent
@@ -788,7 +788,7 @@ immutable XClientMessageEvent <: AbstractXEvent
     display::Ptr{Display} # Display the event was read from
     window::Window
     message_type::Atom
-    data::Clong5
+    data::Cbuf5long
 end
 
 immutable XMappingEvent <: AbstractXEvent

@@ -21,6 +21,9 @@
 #define DISPLAY_OFFSET(M)  OFFSET(_XPrivDisplay,M)
 #define SCREEN_OFFSET(M)   OFFSET(Screen*,M)
 
+#define FALSE 0
+#define TRUE  (!FALSE)
+
 static void
 unsafe_load(const char* func,
 	    const char* arg,
@@ -41,28 +44,35 @@ unsafe_load(const char* func,
 static void
 fixed_size(const char* header, const char* name,
 	   const char* ctype,
-	   const char* letter, int n, int r)
+	   const char* letter, int n, int r, int zero)
 {
+  char buffer[128];
   int i;
 
+  if (name == NULL) {
+    sprintf(buffer, "Cbuf%d%s", n, (ctype[0] == 'C' ? ctype + 1 : ctype));
+    name = buffer;
+  }
   if (header != NULL) {
     printf("%s", header);
   } else {
-    printf("immutable %s%d", ctype, n);
+    printf("immutable %s", name);
   }
   for (i = 1; i <= n; ++i) {
     printf("%s%s%02d::%s",
 	   ((i%r) == 1 ? "\n    " : "; "),
 	   letter, i, ctype);
   }
-  if (header != NULL) {
+  if (zero) {
+    /* Initialize with zeros. */
     printf("\n    (::Type{%s})() =\n        new(", name);
+    for (i = 0; i < n; ++i) {
+      printf("0%s",
+             (i == n - 1 ? ")\n" :
+              ((i%r) == r - 1 ? ",\n            " : ", ")));
+    }
   } else {
-    printf("\n    (::Type{%s%d})() =\n        new(", ctype, n);
-  }
-  for (i = 0; i < n; ++i) {
-    printf("0%s",
-	   (i == n - 1 ? ")\n" : ((i%r) == r - 1 ? ",\n            " : ", ")));
+    printf("\n    (::Type{%s})() = new()\n", name);
   }
   printf("end\n");
   printf("\n");
@@ -88,10 +98,10 @@ gen_types()
 
   printf("\n# Dummy structures with enough elements of a given type.\n");
   printf("\n");
-  fixed_size(NULL, NULL, "Cchar",  "c", 32, 8);
-  fixed_size(NULL, NULL, "Cchar",  "c", 20, 5);
-  fixed_size(NULL, NULL, "Cshort", "s", 10, 5);
-  fixed_size(NULL, NULL, "Clong",  "l",  5, 5);
+  fixed_size(NULL, NULL, "Cchar",  "c", 32, 8, FALSE);
+  fixed_size(NULL, NULL, "Cchar",  "c", 20, 5, FALSE);
+  fixed_size(NULL, NULL, "Cshort", "s", 10, 5, FALSE);
+  fixed_size(NULL, NULL, "Clong",  "l",	5,  5, FALSE);
 
   printf("\n# Abstract and generic types for events\n");
   printf("\n");
@@ -100,7 +110,7 @@ gen_types()
 
   n = HOWMANY(sizeof(XEvent), sizeof(int));
   fixed_size("immutable XEvent <: AbstractXEvent", "XEvent",
-	     "Cint", "i", n, 6);
+	     "Cint", "i", n, 6, FALSE);
   printf("@assert isbits(XEvent)\n");
   printf("\n");
 
