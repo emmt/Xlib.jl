@@ -4,7 +4,7 @@
 an interface to the [X11 library](https://en.wikipedia.org/wiki/Xlib) (as a
 client).  The objective is to provide a low-level but complete interface.  A
 higher level interface could be build on top of this low-level version.  The
-package is far from complete: all constants and all structures are covered and
+package is far from complete: all constants and all structures are covered but
 only some functions have been wrapped (and tested).
 
 
@@ -24,12 +24,7 @@ To whet your appetite, here is a short example (inspired by a
 [tutorial by Philipp K. Janert](http://www.linuxjournal.com/article/4879)):
 
 ```julia
-import Xlib: BlackPixel, ButtonPressMask, ButtonRelease,
-    ButtonReleaseMask, DefaultRootWindow, DefaultScreen, EventType,
-    MapNotify, StructureNotifyMask, WhitePixel, XCloseDisplay,
-    XCreateGC, XCreateSimpleWindow, XDestroyWindow, XDrawLine,
-    XEvent, XMapWindow, XNextEvent, XOpenDisplay, XSelectInput,
-    XSetForeground
+using Xlib
 
 function test1()
 
@@ -72,3 +67,15 @@ function test1()
     return 0
 end
 ```
+
+
+# Notes for Contributors
+
+Whenever you add new symbols to be exported, update the file `src/exports.jl`
+accordingly.  This can be automated by:
+
+```julia
+using Xlib
+Xlib.generateexports("src/exports.jl")
+```
+

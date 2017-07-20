@@ -1,13 +1,6 @@
 module XlibTests
 
-import Xlib: BlackPixel, ButtonPressMask, ButtonRelease, ButtonReleaseMask,
-    DefaultGC, DefaultRootWindow, DefaultScreen, DisplayHeight, DisplayWidth,
-    EventType, Expose, ExposureMask, KeyPress, KeyPressMask, MapNotify,
-    ProtocolRevision, ProtocolVersion, RootWindow, ScreenOfDisplay,
-    StructureNotifyMask, WhitePixel, XCloseDisplay, XCreateGC,
-    XCreateSimpleWindow, XDestroyWindow, XDrawLine, XDrawString, XEvent,
-    XFillRectangle, XMapWindow, XNextEvent, XOpenDisplay, XSelectInput,
-    XSetForeground, XWarpPointer
+using Xlib
 
 # Example based on tutorial by Philipp K. Janert
 # (http://www.linuxjournal.com/article/4879)):
@@ -109,7 +102,5 @@ function test2()
 
     nothing
 end
-
-test2()
 
 end

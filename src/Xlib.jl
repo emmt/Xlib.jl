@@ -16,9 +16,11 @@ using Compat
 
 const _XLIB = "libX11.so" # FIXME: should be set in ../deps
 
+include("exports.jl")
 include("constants.jl")
 include("types.jl")
 include("../deps/accessors.jl")
+include("utils.jl")
 
 XOpenDisplay(name::AbstractString) =
     ccall((:XOpenDisplay, _XLIB), Ptr{Display}, (Cstring,), name)
