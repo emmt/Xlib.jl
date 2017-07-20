@@ -1,5 +1,5 @@
 #
-# Xlib.jl --
+# utils.jl --
 #
 # Utilities for the Julia wrapper of X11 library.
 #
@@ -9,6 +9,15 @@
 #
 # This file is part of Xlib.jl which is licensed under the MIT "Expat" License.
 #
+
+"""
+    EventType(evt)
+
+yields the type of event `evt`.
+"""
+EventType(evt::XEvent) = evt.i01
+EventType(evt::AbstractXEvent) = evt._type
+EventType{T<:AbstractXEvent}(evt::Ref{T}) = EventType(evt[])
 
 generateexports() = generateexports(STDOUT)
 
