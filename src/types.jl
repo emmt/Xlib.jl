@@ -845,3 +845,266 @@ immutable XGenericEventCookie
     cookie::Cuint
     data::Ptr{Void}
 end
+
+#
+# Per character font metric information.
+#
+type XCharStruct
+    lbearing::Cshort    # origin to left edge of raster
+    rbearing::Cshort    # origin to right edge of raster
+    width::Cshort       # advance to next Cchar's origin
+    ascent::Cshort      # baseline to top edge of raster
+    descent::Cshort     # baseline to bottom edge of raster
+    attributes::Cushort # per char flags (not predefined)
+end
+
+#
+# To allow arbitrary information with fonts, there are additional properties
+# returned.
+#
+type XFontProp
+    name::Atom
+    card32::Culong
+end
+
+type XFontStruct
+    ext_data::Ptr{XExtData}    # hook for extension to hang data
+    fid::Font                  # Font id for this font
+    direction::Cuint           # hint about direction the font is painted
+    min_char_or_byte2::Cuint   # first character
+    max_char_or_byte2::Cuint   # last character
+    min_byte1::Cuint           # first row that exists
+    max_byte1::Cuint           # last row that exists
+    all_chars_exist::_Bool     # flag if all characters have non-zero size
+    default_char::Cuint        # char to print for undefined character
+    n_properties::Cint         # how many properties there are
+    properties::Ptr{XFontProp} # pointer to array of additional properties
+    min_bounds::XCharStruct    # minimum bounds over all existing char
+    max_bounds::XCharStruct    # maximum bounds over all existing char
+    per_char::Ptr{XCharStruct} # first_char to last_char information
+    ascent::Cint               # log. extent above baseline for spacing
+    descent::Cint              # log. descent below baseline for spacing
+end
+
+#
+# PolyText routines take these as arguments.
+#
+type XTextItem
+    chars::Ptr{Cchar} # pointer to string
+    nchars::Cint      # number of characters
+    delta::Cint       # delta between strings
+    font::Font        # font to print it in, None don't change
+end
+
+type XChar2b # normal 16 bit characters are two bytes
+    byte1::Cuchar
+    byte2::Cuchar
+end
+
+type XTextItem16
+    chars::Ptr{XChar2b} # two byte characters
+    nchars::Cint        # number of characters
+    delta::Cint         # delta between strings
+    font::Font          # font to print it in, None don't change
+end
+
+#
+# All the members of `XEDataObject` defined as:
+#
+#     typedef union { Display *display;
+#                     GC gc;
+#                     Visual *visual;
+#                     Screen *screen;
+#                     ScreenFormat *pixmap_format;
+#                     XFontStruct *font; } XEDataObject;
+#
+# are pointers so we aassume the following equivalence:
+#
+type XEDataObject
+    ptr::Ptr{Opaque}
+end
+
+type XFontSetExtents
+    max_ink_extent::XRectangle
+    max_logical_extent::XRectangle
+end
+
+# typedef struct _XOM *XOM;
+# typedef struct _XOC *XOC, *XFontSet;
+const XOM = Ptr{Opaque}
+const XOC = Ptr{Opaque}
+const XFontSet = Ptr{Opaque}
+
+type XmbTextItem
+    chars::Ptr{Cchar}
+    nchars::Cint
+    delta::Cint
+    font_set::XFontSet
+end
+
+type XwcTextItem
+    chars::Ptr{Cwchar_t}
+    nchars::Cint
+    delta::Cint
+    font_set::XFontSet
+end
+
+type XOMCharSetList
+    charset_count::Cint
+    charset_list::Ptr{Ptr{Cchar}}
+end
+
+# Equivalences for C-enumeration `XOrientation`:
+const XOrientation = Cint
+const XOMOrientation_LTR_TTB = XOrientation(0)
+const XOMOrientation_RTL_TTB = XOrientation(1)
+const XOMOrientation_TTB_LTR = XOrientation(2)
+const XOMOrientation_TTB_RTL = XOrientation(3)
+const XOMOrientation_Context = XOrientation(4)
+
+type XOMOrientation
+    num_orientation::Cint
+    orientation::Ptr{XOrientation}  # Input Text description
+end
+
+type XOMFontInfo
+    num_font::Cint
+    font_struct_list::Ptr{Ptr{XFontStruct}}
+    font_name_list::Ptr{Ptr{Cchar}}
+end
+
+# typedef struct _XIM *XIM;
+const XIM = Ptr{Opaque}
+
+# typedef struct _XIC *XIC;
+const XIC = Ptr{Opaque}
+
+# typedef void (*XIMProc)(XIM, XPointer, XPointer);
+const XIMProc = Cfunc
+
+# typedef Bool (*XICProc)(XIC, XPointer, Pointer);
+const XICProc = Cfunc
+
+# typedef void (*XIDProc)(Display*, XPointer, XPointer);
+const XIDProc = Cfunc
+
+const XIMStyle = Culong
+
+type XIMStyles
+    count_styles::Cushort
+    supported_styles::Ptr{XIMStyle}
+end
+
+const XVaNestedList = Ptr{Void}
+
+type XIMCallback
+    client_data::XPointer
+    callback::XIMProc
+end
+
+type XICCallback
+    client_data::XPointer
+    callback::XICProc
+end
+
+const XIMFeedback = Culong
+
+type XIMText
+    length::Cushort
+    feedback::Ptr{XIMFeedback}
+    encoding_is_wchar::_Bool
+    string::Ptr{Void} # FIXME:
+end
+
+const XIMPreeditState = Culong
+
+type XIMPreeditStateNotifyCallbackStruct
+    state::XIMPreeditState
+end
+
+const XIMResetState = Culong
+
+const XIMStringConversionFeedback = Culong
+
+type XIMStringConversionText
+    length::Cushort
+    feedback::Ptr{XIMStringConversionFeedback}
+    encoding_is_wchar::_Bool
+    string::Ptr{Void} # FIXME:
+end
+
+const XIMStringConversionPosition = Cushort
+
+const XIMStringConversionType = Cushort
+
+const XIMStringConversionOperation = Cushort
+
+# Equivalences for C-enumeration `XIMCaretDirection`:
+const XIMCaretDirection = Cint
+const XIMForwardChar      = XIMCaretDirection(0)
+const XIMBackwardChar     = XIMCaretDirection(1)
+const XIMForwardWord      = XIMCaretDirection(2)
+const XIMBackwardWord     = XIMCaretDirection(3)
+const XIMCaretUp          = XIMCaretDirection(4)
+const XIMCaretDown        = XIMCaretDirection(5)
+const XIMNextLine         = XIMCaretDirection(6)
+const XIMPreviousLine     = XIMCaretDirection(7)
+const XIMLineStart        = XIMCaretDirection(8)
+const XIMLineEnd          = XIMCaretDirection(9)
+const XIMAbsolutePosition = XIMCaretDirection(10)
+const XIMDontChange       = XIMCaretDirection(11)
+
+type XIMStringConversionCallbackStruct
+    position::XIMStringConversionPosition
+    direction::XIMCaretDirection
+    operation::XIMStringConversionOperation
+    factor::Cushort
+    text::Ptr{XIMStringConversionText}
+end
+
+type XIMPreeditDrawCallbackStruct
+    caret::Cint          # Cursor offset within pre-edit string
+    chg_first::Cint      # Starting change position
+    chg_length::Cint     # Length of the change in character count
+    text::Ptr{XIMText}
+end
+
+# Equivalences for C-enumeration `XIMCaretStyle`:
+const XIMCaretStyle = Cint
+const XIMIsInvisible = XIMCaretStyle(0) # Disable caret feedback
+const XIMIsPrimary   = XIMCaretStyle(1) # UI defined caret feedback
+const XIMIsSecondary = XIMCaretStyle(2) # UI defined caret feedback
+
+type XIMPreeditCaretCallbackStruct
+    position::Cint               # Caret offset within pre-edit string
+    direction::XIMCaretDirection # Caret moves direction
+    style::XIMCaretStyle         # Feedback of the caret
+end
+
+# Equivalences for C-enumeration `XIMStatusDataType`:
+const XIMStatusDataType = Cint
+const XIMTextType = XIMStatusDataType(0)
+const XIMBitmapType = XIMStatusDataType(1)
+
+type XIMStatusDrawCallbackStruct
+    _type::XIMStatusDataType
+    data::Union{Ptr{XIMText},Pixmap} # FIXME:
+end
+
+type XIMHotKeyTrigger
+    keysym::KeySym
+    modifier::Cint
+    modifier_mask::Cint
+end
+
+type XIMHotKeyTriggers
+    num_hot_key::Cint
+    key::Ptr{XIMHotKeyTrigger}
+end
+
+const XIMHotKeyState = Culong
+
+type XIMValuesList
+    count_values::Cushort
+    supported_values::Ptr{Ptr{Cchar}}
+end
