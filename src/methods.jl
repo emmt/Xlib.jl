@@ -252,8 +252,8 @@ XUnlockDisplay(dpy::Ptr{Display}) =
 
 # Routines for dealing with extensions
 
-XInitExtension(dpy::Ptr{Display}, name::Ptr{Cchar}) =
-    ccall((:XInitExtension, _XLIB), Ptr{XExtCodes}, (Ptr{Display}, Ptr{Cchar}), dpy, name)
+XInitExtension(dpy::Ptr{Display}, name) =
+    ccall((:XInitExtension, _XLIB), Ptr{XExtCodes}, (Ptr{Display}, Cstring), dpy, name)
 
 XAddExtension(dpy::Ptr{Display}) =
     ccall((:XAddExtension, _XLIB), Ptr{XExtCodes}, (Ptr{Display},), dpy)
@@ -310,10 +310,10 @@ XLastKnownRequestProcessed(dpy::Ptr{Display}) =
     ccall((:XLastKnownRequestProcessed, _XLIB), Culong, (Ptr{Display},), dpy)
 
 XServerVendor(dpy::Ptr{Display}) =
-    ccall((:XServerVendor, _XLIB), Ptr{Cchar}, (Ptr{Display},), dpy)
+    ccall((:XServerVendor, _XLIB), Cstring, (Ptr{Display},), dpy)
 
 XDisplayString(dpy::Ptr{Display}) =
-    ccall((:XDisplayString, _XLIB), Ptr{Cchar}, (Ptr{Display},), dpy)
+    ccall((:XDisplayString, _XLIB), Cstring, (Ptr{Display},), dpy)
 
 XDefaultColormap(dpy::Ptr{Display}, screen_number::Integer) =
     ccall((:XDefaultColormap, _XLIB), Colormap, (Ptr{Display}, Cint), dpy, screen_number)
@@ -451,9 +451,9 @@ XAllocColorPlanes(dpy::Ptr{Display}, colormap::Colormap, contig::Integer, pixels
           (Ptr{Display}, Colormap, _Bool, Ptr{Culong}, Cint, Cint, Cint, Cint, Ptr{Culong}, Ptr{Culong}, Ptr{Culong}),
           dpy, colormap, contig, pixels_return, ncolors, nreds, ngreens, nblues, rmask_return, gmask_return, bmask_return)
 
-XAllocNamedColor(dpy::Ptr{Display}, colormap::Colormap, color_name::Ptr{Cchar}, screen_def_return::Ptr{XColor}, exact_def_return::Ptr{XColor}) =
+XAllocNamedColor(dpy::Ptr{Display}, colormap::Colormap, color_name::AbstractString, screen_def_return::Ptr{XColor}, exact_def_return::Ptr{XColor}) =
     ccall((:XAllocNamedColor, _XLIB), Status,
-          (Ptr{Display}, Colormap, Ptr{Cchar}, Ptr{XColor}, Ptr{XColor}),
+          (Ptr{Display}, Colormap, Cstring, Ptr{XColor}, Ptr{XColor}),
           dpy, colormap, color_name, screen_def_return, exact_def_return)
 
 XAllowEvents(dpy::Ptr{Display}, event_mode::Integer, time::Time) =
@@ -523,27 +523,27 @@ XChangeWindowAttributes(dpy::Ptr{Display}, w::Window, valuemask::Integer, attrib
           dpy, w, valuemask, attributes)
 
 # FIXME: _Bool XCheckIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
-XCheckIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer) =
+XCheckIfEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}, predicate::Cfunc, arg::XPointer) =
     ccall((:XCheckIfEvent, _XLIB), _Bool,
           (Ptr{Display}, Ptr{XEvent}, Cfunc, XPointer),
           dpy, event_return, predicate, arg)
 
-XCheckMaskEvent(dpy::Ptr{Display}, event_mask::Integer, event_return::Ptr{XEvent}) =
+XCheckMaskEvent(dpy::Ptr{Display}, event_mask::Integer, event_return::Ref{XEvent}) =
     ccall((:XCheckMaskEvent, _XLIB), _Bool,
           (Ptr{Display}, Clong, Ptr{XEvent}),
           dpy, event_mask, event_return)
 
-XCheckTypedEvent(dpy::Ptr{Display}, event_type::Integer, event_return::Ptr{XEvent}) =
+XCheckTypedEvent(dpy::Ptr{Display}, event_type::Integer, event_return::Ref{XEvent}) =
     ccall((:XCheckTypedEvent, _XLIB), _Bool,
           (Ptr{Display}, Cint, Ptr{XEvent}),
           dpy, event_type, event_return)
 
-XCheckTypedWindowEvent(dpy::Ptr{Display}, w::Window, event_type::Integer, event_return::Ptr{XEvent}) =
+XCheckTypedWindowEvent(dpy::Ptr{Display}, w::Window, event_type::Integer, event_return::Ref{XEvent}) =
     ccall((:XCheckTypedWindowEvent, _XLIB), _Bool,
           (Ptr{Display}, Window, Cint, Ptr{XEvent}),
           dpy, w, event_type, event_return)
 
-XCheckWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Integer, event_return::Ptr{XEvent}) =
+XCheckWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Integer, event_return::Ref{XEvent}) =
     ccall((:XCheckWindowEvent, _XLIB), _Bool,
           (Ptr{Display}, Window, Clong, Ptr{XEvent}),
           dpy, w, event_mask, event_return)
@@ -915,7 +915,7 @@ XHeightOfScreen(screen::Ptr{Screen}) =
     ccall((:XHeightOfScreen, _XLIB), Cint, (Ptr{Screen},), screen)
 
 # FIXME: Cint XIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
-XIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer) =
+XIfEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}, predicate::Cfunc, arg::XPointer) =
     ccall((:XIfEvent, _XLIB), Cint,
           (Ptr{Display}, Ptr{XEvent}, Cfunc, XPointer),
           dpy, event_return, predicate, arg)
@@ -932,9 +932,9 @@ XKeysymToKeycode(dpy::Ptr{Display}, keysym::KeySym) =
 XKillClient(dpy::Ptr{Display}, resource::XID) =
     ccall((:XKillClient, _XLIB), Cint, (Ptr{Display}, XID), dpy, resource)
 
-XLookupColor(dpy::Ptr{Display}, colormap::Colormap, color_name::Ptr{Cchar}, exact_def_return::Ptr{XColor}, screen_def_return::Ptr{XColor}) =
+XLookupColor(dpy::Ptr{Display}, colormap::Colormap, color_name::AbstractString, exact_def_return::Ref{XColor}, screen_def_return::Ref{XColor}) =
     ccall((:XLookupColor, _XLIB), Status,
-          (Ptr{Display}, Colormap, Ptr{Cchar}, Ptr{XColor}, Ptr{XColor}),
+          (Ptr{Display}, Colormap, Cstring, Ptr{XColor}, Ptr{XColor}),
           dpy, colormap, color_name, exact_def_return, screen_def_return)
 
 XLowerWindow(dpy::Ptr{Display}, w::Window) =
@@ -949,7 +949,7 @@ XMapSubwindows(dpy::Ptr{Display}, w::Window) =
 XMapWindow(dpy::Ptr{Display}, w::Window) =
     ccall((:XMapWindow, _XLIB), Cint, (Ptr{Display}, Window), dpy, w)
 
-XMaskEvent(dpy::Ptr{Display}, event_mask::Integer, event_return::Ptr{XEvent}) =
+XMaskEvent(dpy::Ptr{Display}, event_mask::Integer, event_return::Ref{XEvent}) =
     ccall((:XMaskEvent, _XLIB), Cint,
           (Ptr{Display}, Clong, Ptr{XEvent}),
           dpy, event_mask, event_return)
@@ -970,7 +970,7 @@ XMoveWindow(dpy::Ptr{Display}, w::Window, x::Integer, y::Integer) =
           (Ptr{Display}, Window, Cint, Cint),
           dpy, w, x, y)
 
-XNextEvent(dpy::Ptr{Display}, event_return) =
+XNextEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}) =
     ccall((:XNextEvent, _XLIB), Cint, (Ptr{Display}, Ptr{XEvent}), dpy, event_return)
 
 XNoOp(dpy::Ptr{Display}) =
@@ -986,11 +986,11 @@ XParseGeometry(parsestring::Ptr{Cchar}, x_return::Ptr{Cint}, y_return::Ptr{Cint}
           (Ptr{Cchar}, Ptr{Cint}, Ptr{Cint}, Ptr{Cuint}, Ptr{Cuint}),
           parsestring, x_return, y_return, width_return, height_return)
 
-XPeekEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}) =
+XPeekEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}) =
     ccall((:XPeekEvent, _XLIB), Cint, (Ptr{Display}, Ptr{XEvent}), dpy, event_return)
 
 # FIXME: Cint XPeekIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, _Bool (*predicate) (dpy::Ptr{Display}, event::Ptr{XEvent}, arg::XPointer), arg::XPointer);
-XPeekIfEvent(dpy::Ptr{Display}, event_return::Ptr{XEvent}, predicate::Cfunc, arg::XPointer) =
+XPeekIfEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}, predicate::Cfunc, arg::XPointer) =
     ccall((:XPeekIfEvent, _XLIB), Cint,
           (Ptr{Display}, Ptr{XEvent}, Cfunc, XPointer),
           dpy, event_return, predicate, arg)
@@ -1007,7 +1007,7 @@ XProtocolRevision(dpy::Ptr{Display}) =
 XProtocolVersion(dpy::Ptr{Display}) =
     ccall((:XProtocolVersion, _XLIB), Cint, (Ptr{Display},), dpy)
 
-XPutBackEvent(dpy::Ptr{Display}, event::Ptr{XEvent}) =
+XPutBackEvent(dpy::Ptr{Display}, event::Ref{XEvent}) =
     ccall((:XPutBackEvent, _XLIB), Cint, (Ptr{Display}, Ptr{XEvent}), dpy, event)
 
 XPutImage(dpy::Ptr{Display}, d::Drawable, gc::GC, img::Ptr{XImage}, src_x::Integer, src_y::Integer, dest_x::Integer, dest_y::Integer, width::Integer, height::Integer) =
@@ -1147,7 +1147,7 @@ XSelectInput(dpy::Ptr{Display}, w::Window, event_mask::Integer) =
           (Ptr{Display}, Window, Clong),
           dpy, w, event_mask)
 
-XSendEvent(dpy::Ptr{Display}, w::Window, propagate::Integer, event_mask::Integer, event_send::Ptr{XEvent}) =
+XSendEvent(dpy::Ptr{Display}, w::Window, propagate::Integer, event_mask::Integer, event_send::Ref{XEvent}) =
     ccall((:XSendEvent, _XLIB), Status,
           (Ptr{Display}, Window, _Bool, Clong, Ptr{XEvent}),
           dpy, w, propagate, event_mask, event_send)
@@ -1427,7 +1427,7 @@ XWidthMMOfScreen(screen::Ptr{Screen}) =
 XWidthOfScreen(screen::Ptr{Screen}) =
     ccall((:XWidthOfScreen, _XLIB), Cint, (Ptr{Screen},), screen)
 
-XWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Integer, event_return::Ptr{XEvent}) =
+XWindowEvent(dpy::Ptr{Display}, w::Window, event_mask::Integer, event_return::Ref{XEvent}) =
     ccall((:XWindowEvent, _XLIB), Cint,
           (Ptr{Display}, Window, Clong, Ptr{XEvent}),
           dpy, w, event_mask, event_return)
@@ -1639,7 +1639,7 @@ Xutf8ResetIC(ic::XIC) =
 XIMOfIC(ic::XIC) =
     ccall((:XIMOfIC, _XLIB), XIM, (XIC,), ic)
 
-XFilterEvent(event::Ptr{XEvent}, window::Window) =
+XFilterEvent(event::Ref{XEvent}, window::Window) =
     ccall((:XFilterEvent, _XLIB), _Bool, (Ptr{XEvent}, Window), event, window)
 
 XmbLookupString(ic::XIC, event::Ptr{XKeyPressedEvent}, buffer_return::Ptr{Cchar}, bytes_buffer::Integer, keysym_return::Ptr{KeySym}, status_return::Ptr{Status}) =
