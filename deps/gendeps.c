@@ -239,6 +239,13 @@ gen_accessors()
   GET_DPYSCR(DefaultDepth,    DefaultDepthOfScreen);
   GET_DPYSCR(DefaultColormap, DefaultColormapOfScreen);
 
+  printf("function XAllocID(dpy::Ptr{Display})\n");
+  printf("    ptr = unsafe_load(Ptr{Cfunc}(dpy + %d))\n",
+         DISPLAY_OFFSET(resource_alloc));
+  printf("    ccall(ptr, XID, (Ptr{Display},), dpy)\n");
+  printf("end\n");
+  printf("\n");
+
   printf("\n");
   printf("# Methods for screen oriented applications (toolkit).\n");
   printf("\n");
