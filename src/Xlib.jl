@@ -105,4 +105,14 @@ XDrawLine(dpy::Ptr{Display}, drw::Drawable, gc::GC, x1::Integer, y1::Integer, x2
           (Ptr{Display}, Drawable, GC, Cint, Cint, Cint, Cint),
           dpy, drw, gc, x1, y1, x2, y2)
 
+XFillRectangle(dpy::Ptr{Display}, drw::Drawable, gc::GC, x::Integer, y::Integer, width::Integer, height::Integer) =
+    ccall((:XFillRectangle, _XLIB), Cint,
+          (Ptr{Display}, Drawable, GC, Cint, Cint, Cuint, Cuint),
+          dpy, drw, gc, x, y, width, height)
+
+XDrawString(dpy::Ptr{Display}, drw::Drawable, gc::GC, x::Integer, y::Integer, str::AbstractString, len::Integer = length(str)) =
+    ccall((:XDrawString, _XLIB), Cint,
+          (Ptr{Display}, Drawable, GC, Cint, Cint, Cstring, Cint),
+          dpy, drw, gc, x, y, str, len)
+
 end

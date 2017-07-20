@@ -1,14 +1,16 @@
-# Example based on tutorial by Philipp K. Janert
-# (http://www.linuxjournal.com/article/4879)):
-
-module XlibTest1
+module XlibTests
 
 import Xlib: BlackPixel, ButtonPressMask, ButtonRelease, ButtonReleaseMask,
-    DefaultRootWindow, DefaultScreen, DisplayHeight, DisplayWidth, EventType,
-    MapNotify, ProtocolRevision, ProtocolVersion, ScreenOfDisplay,
+    DefaultGC, DefaultRootWindow, DefaultScreen, DisplayHeight, DisplayWidth,
+    EventType, Expose, ExposureMask, KeyPress, KeyPressMask, MapNotify,
+    ProtocolRevision, ProtocolVersion, RootWindow, ScreenOfDisplay,
     StructureNotifyMask, WhitePixel, XCloseDisplay, XCreateGC,
-    XCreateSimpleWindow, XDestroyWindow, XDrawLine, XEvent, XMapWindow,
-    XNextEvent, XOpenDisplay, XSelectInput, XSetForeground, XWarpPointer
+    XCreateSimpleWindow, XDestroyWindow, XDrawLine, XDrawString, XEvent,
+    XFillRectangle, XMapWindow, XNextEvent, XOpenDisplay, XSelectInput,
+    XSetForeground, XWarpPointer
+
+# Example based on tutorial by Philipp K. Janert
+# (http://www.linuxjournal.com/article/4879)):
 
 function test1()
 
@@ -68,6 +70,46 @@ function test1()
     return 0
 end
 
-test1()
+# Example based on https://en.wikipedia.org/wiki/Xlib
+function test2()
+    # Open connection to the server.
+    dpy = XOpenDisplay()
+    dpy == C_NULL && error("unable to open display")
+    scr = DefaultScreen(dpy)
+
+    # Create a window.
+    win = XCreateSimpleWindow(dpy, RootWindow(dpy, scr), 10, 10, 200, 100, 1,
+                              BlackPixel(dpy, scr), WhitePixel(dpy, scr))
+
+    # Select the kind of events we are interested in.
+    XSelectInput(dpy, win, ExposureMask | KeyPressMask)
+
+    # Map (show) the window.
+    XMapWindow(dpy, win)
+
+    # Run event loop.
+    evt = Ref(XEvent())
+    while true
+        XNextEvent(dpy, evt)
+
+        # Draw or redraw the window.
+        if EventType(evt) == Expose
+            XFillRectangle(dpy, win, DefaultGC(dpy, scr), 20, 20, 10, 10)
+            XDrawString(dpy, win, DefaultGC(dpy, scr), 50, 50, "Hello, World!")
+        end
+
+        # Exit whenever a key is pressed.
+        if EventType(evt) == KeyPress
+            break
+        end
+    end
+
+    # Shutdown server connection
+    XCloseDisplay(dpy)
+
+    nothing
+end
+
+test2()
 
 end
