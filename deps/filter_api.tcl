@@ -35,14 +35,15 @@ set PROTO "^($TYPE) +($NAME) *\\(($ARGS)\\) *; *\$"
 
 # Conversion table for input types:
 array set INPUT_TYPE {
-  Cint    Integer
-  Cshort  Integer
-  Clong   Integer
-  Cuint   Integer
-  Cushort Integer
-  Culong  Integer
-  _Bool   Integer
-  Status  Integer
+  Cint     Integer
+  Cshort   Integer
+  Clong    Integer
+  Cuint    Integer
+  Cushort  Integer
+  Culong   Integer
+  _Bool    Integer
+  Status   Integer
+  _KeyCode Integer
 }
 
 set n 0

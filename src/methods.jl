@@ -24,7 +24,7 @@ XGetMotionEvents(dpy::Ptr{Display}, w::Window, start::Time, stop::Time, nevents_
           (Ptr{Display}, Window, Time, Time, Ptr{Cint}),
           dpy, w, start, stop, nevents_return)
 
-XDeleteModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::_KeyCode, modifier::Integer) =
+XDeleteModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::Integer, modifier::Integer) =
     ccall((:XDeleteModifiermapEntry, _XLIB), Ptr{XModifierKeymap},
           (Ptr{XModifierKeymap}, _KeyCode, Cint),
           modmap, keycode_entry, modifier)
@@ -32,7 +32,7 @@ XDeleteModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::_KeyCode, m
 XGetModifierMapping(dpy::Ptr{Display}) =
     ccall((:XGetModifierMapping, _XLIB), Ptr{XModifierKeymap}, (Ptr{Display},), dpy)
 
-XInsertModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::_KeyCode, modifier::Integer) =
+XInsertModifiermapEntry(modmap::Ptr{XModifierKeymap}, keycode_entry::Integer, modifier::Integer) =
     ccall((:XInsertModifiermapEntry, _XLIB), Ptr{XModifierKeymap},
           (Ptr{XModifierKeymap}, _KeyCode, Cint),
           modmap, keycode_entry, modifier)
@@ -203,7 +203,7 @@ XListHosts(dpy::Ptr{Display}, nhosts_return::Ptr{Cint}, state_return::Ptr{_Bool}
           dpy, nhosts_return, state_return)
 
 # FIXME: XKeycodeToKeysym is deprecated, use XkbKeycodeToKeysym instead
-XKeycodeToKeysym(dpy::Ptr{Display}, keycode::_KeyCode, index::Integer) =
+XKeycodeToKeysym(dpy::Ptr{Display}, keycode::Integer, index::Integer) =
     ccall((:XKeycodeToKeysym, _XLIB), KeySym,
           (Ptr{Display}, _KeyCode, Cint),
           dpy, keycode, index)
@@ -211,7 +211,7 @@ XKeycodeToKeysym(dpy::Ptr{Display}, keycode::_KeyCode, index::Integer) =
 XLookupKeysym(key_event::Ptr{XKeyEvent}, index::Integer) =
     ccall((:XLookupKeysym, _XLIB), KeySym, (Ptr{XKeyEvent}, Cint), key_event, index)
 
-XGetKeyboardMapping(dpy::Ptr{Display}, first_keycode::_KeyCode, keycode_count::Integer, keysyms_per_keycode_return::Ptr{Cint}) =
+XGetKeyboardMapping(dpy::Ptr{Display}, first_keycode::Integer, keycode_count::Integer, keysyms_per_keycode_return::Ptr{Cint}) =
     ccall((:XGetKeyboardMapping, _XLIB), Ptr{KeySym},
           (Ptr{Display}, _KeyCode, Cint, Ptr{Cint}),
           dpy, first_keycode, keycode_count, keysyms_per_keycode_return)
@@ -970,7 +970,7 @@ XMoveWindow(dpy::Ptr{Display}, w::Window, x::Integer, y::Integer) =
           (Ptr{Display}, Window, Cint, Cint),
           dpy, w, x, y)
 
-XNextEvent(dpy::Ptr{Display}, event_return::Ref{XEvent}) =
+XNextEvent(dpy::Ptr{Display}, event_return) =
     ccall((:XNextEvent, _XLIB), Cint, (Ptr{Display}, Ptr{XEvent}), dpy, event_return)
 
 XNoOp(dpy::Ptr{Display}) =
