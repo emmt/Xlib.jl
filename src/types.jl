@@ -430,7 +430,7 @@ end
 # Definitions of specific events.
 #
 
-immutable XKeyEvent <: AbstractXEvent
+type XKeyEvent <: AbstractXEvent
     _type::Cint           # of event
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -450,7 +450,7 @@ end
 const XKeyPressedEvent  = XKeyEvent
 const XKeyReleasedEvent = XKeyEvent
 
-immutable XButtonEvent <: AbstractXEvent
+type XButtonEvent <: AbstractXEvent
     _type::Cint           # of event
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -470,7 +470,7 @@ end
 const XButtonPressedEvent  = XButtonEvent
 const XButtonReleasedEvent = XButtonEvent
 
-immutable XMotionEvent <: AbstractXEvent
+type XMotionEvent <: AbstractXEvent
     _type::Cint           # of event
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -489,7 +489,7 @@ immutable XMotionEvent <: AbstractXEvent
 end
 const XPointerMovedEvent = XMotionEvent
 
-immutable XCrossingEvent <: AbstractXEvent
+type XCrossingEvent <: AbstractXEvent
     _type::Cint           # of event
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -512,7 +512,7 @@ end
 const XEnterWindowEvent = XCrossingEvent
 const XLeaveWindowEvent = XCrossingEvent
 
-immutable XFocusChangeEvent <: AbstractXEvent
+type XFocusChangeEvent <: AbstractXEvent
     _type::Cint           # FocusIn or FocusOut
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -528,7 +528,7 @@ const XFocusInEvent  = XFocusChangeEvent
 const XFocusOutEvent = XFocusChangeEvent
 
 # generated on EnterWindow and FocusIn  when KeyMapState selected
-immutable XKeymapEvent <: AbstractXEvent
+type XKeymapEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -537,7 +537,7 @@ immutable XKeymapEvent <: AbstractXEvent
     key_vector::Cbuf32char
 end
 
-immutable XExposeEvent <: AbstractXEvent
+type XExposeEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -550,7 +550,7 @@ immutable XExposeEvent <: AbstractXEvent
     count::Cint           # if non-zero, at least this many more
 end
 
-immutable XGraphicsExposeEvent <: AbstractXEvent
+type XGraphicsExposeEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -565,7 +565,7 @@ immutable XGraphicsExposeEvent <: AbstractXEvent
     minor_code::Cint      # not defined in the core
 end
 
-immutable XNoExposeEvent <: AbstractXEvent
+type XNoExposeEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -575,7 +575,7 @@ immutable XNoExposeEvent <: AbstractXEvent
     minor_code::Cint      # not defined in the core
 end
 
-immutable XVisibilityEvent <: AbstractXEvent
+type XVisibilityEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -584,7 +584,7 @@ immutable XVisibilityEvent <: AbstractXEvent
     state::Cint           # Visibility state
 end
 
-immutable XCreateWindowEvent <: AbstractXEvent
+type XCreateWindowEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -599,7 +599,7 @@ immutable XCreateWindowEvent <: AbstractXEvent
     override_redirect::_Bool # creation should be overridden
 end
 
-immutable XDestroyWindowEvent <: AbstractXEvent
+type XDestroyWindowEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -608,7 +608,7 @@ immutable XDestroyWindowEvent <: AbstractXEvent
     window::Window
 end
 
-immutable XUnmapEvent <: AbstractXEvent
+type XUnmapEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -618,7 +618,7 @@ immutable XUnmapEvent <: AbstractXEvent
     from_configure::_Bool
 end
 
-immutable XMapEvent <: AbstractXEvent
+type XMapEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -628,7 +628,7 @@ immutable XMapEvent <: AbstractXEvent
     override_redirect::_Bool # boolean, is override set...
 end
 
-immutable XMapRequestEvent <: AbstractXEvent
+type XMapRequestEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -637,7 +637,7 @@ immutable XMapRequestEvent <: AbstractXEvent
     window::Window
 end
 
-immutable XReparentEvent <: AbstractXEvent
+type XReparentEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -650,7 +650,7 @@ immutable XReparentEvent <: AbstractXEvent
     override_redirect::_Bool
 end
 
-immutable XConfigureEvent <: AbstractXEvent
+type XConfigureEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -666,7 +666,7 @@ immutable XConfigureEvent <: AbstractXEvent
     override_redirect::_Bool
 end
 
-immutable XGravityEvent <: AbstractXEvent
+type XGravityEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -677,7 +677,7 @@ immutable XGravityEvent <: AbstractXEvent
     y::Cint
 end
 
-immutable XResizeRequestEvent <: AbstractXEvent
+type XResizeRequestEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -687,7 +687,7 @@ immutable XResizeRequestEvent <: AbstractXEvent
     height::Cint
 end
 
-immutable XConfigureRequestEvent <: AbstractXEvent
+type XConfigureRequestEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -704,7 +704,7 @@ immutable XConfigureRequestEvent <: AbstractXEvent
     value_mask::Culong
 end
 
-immutable XCirculateEvent <: AbstractXEvent
+type XCirculateEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -714,7 +714,7 @@ immutable XCirculateEvent <: AbstractXEvent
     place::Cint           # PlaceOnTop, PlaceOnBottom
 end
 
-immutable XCirculateRequestEvent <: AbstractXEvent
+type XCirculateRequestEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -724,7 +724,7 @@ immutable XCirculateRequestEvent <: AbstractXEvent
     place::Cint           # PlaceOnTop, PlaceOnBottom
 end
 
-immutable XPropertyEvent <: AbstractXEvent
+type XPropertyEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -735,7 +735,7 @@ immutable XPropertyEvent <: AbstractXEvent
     state::Cint           # NewValue, Deleted
 end
 
-immutable XSelectionClearEvent <: AbstractXEvent
+type XSelectionClearEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -745,7 +745,7 @@ immutable XSelectionClearEvent <: AbstractXEvent
     time::Time
 end
 
-immutable XSelectionRequestEvent <: AbstractXEvent
+type XSelectionRequestEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -758,7 +758,7 @@ immutable XSelectionRequestEvent <: AbstractXEvent
     time::Time
 end
 
-immutable XSelectionEvent <: AbstractXEvent
+type XSelectionEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -770,7 +770,7 @@ immutable XSelectionEvent <: AbstractXEvent
     time::Time
 end
 
-immutable XColormapEvent <: AbstractXEvent
+type XColormapEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -781,7 +781,7 @@ immutable XColormapEvent <: AbstractXEvent
     state::Cint           # ColormapInstalled, ColormapUninstalled
 end
 
-immutable XClientMessageEvent <: AbstractXEvent
+type XClientMessageEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -791,7 +791,7 @@ immutable XClientMessageEvent <: AbstractXEvent
     data::Cbuf5long
 end
 
-immutable XMappingEvent <: AbstractXEvent
+type XMappingEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -803,7 +803,7 @@ immutable XMappingEvent <: AbstractXEvent
     count::Cint           # defines range of change w. first_keycode
 end
 
-immutable XErrorEvent <: AbstractXEvent
+type XErrorEvent <: AbstractXEvent
     _type::Cint
     display::Ptr{Display} # Display the event was read from
     resourceid::XID       # resource id
@@ -813,7 +813,7 @@ immutable XErrorEvent <: AbstractXEvent
     minor_code::Cuchar    # Minor op-code of failed request
 end
 
-immutable XAnyEvent <: AbstractXEvent
+type XAnyEvent <: AbstractXEvent
     _type::Cint
     serial::Culong        # # of last request processed by server
     send_event::_Bool     # true if this came from a SendEvent request
@@ -826,7 +826,7 @@ end
 # GenericEvent.  This event is the standard event for all newer extensions.
 #
 
-immutable XGenericEvent <: AbstractXEvent
+type XGenericEvent <: AbstractXEvent
     _type::Cint           # of event. Always GenericEvent
     serial::Culong        # # of last request processed
     send_event::_Bool     # true if from SendEvent request
@@ -835,7 +835,7 @@ immutable XGenericEvent <: AbstractXEvent
     evtype::Cint          # actual event type.
 end
 
-immutable XGenericEventCookie
+type XGenericEventCookie
     _type::Cint           # of event. Always GenericEvent
     serial::Culong        # # of last request processed
     send_event::_Bool     # true if from SendEvent request

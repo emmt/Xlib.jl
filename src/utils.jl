@@ -15,7 +15,6 @@
 
 yields the type of event `evt`.
 """
-EventType(evt::XEvent) = evt.i01
 EventType(evt::AbstractXEvent) = evt._type
 EventType{T<:AbstractXEvent}(evt::Ref{T}) = EventType(evt[])
 

@@ -81,7 +81,7 @@ fixed_size(const char* header, const char* name,
 static void
 gen_types()
 {
-  int n;
+  int i, n;
 
 #if 0
   printf("\n# Basic types.\n");
@@ -122,10 +122,16 @@ gen_types()
   printf("\n");
 
   n = HOWMANY(sizeof(XEvent), sizeof(int));
-  fixed_size("immutable XEvent <: AbstractXEvent", "XEvent",
-	     "Cint", "i", n, 6, FALSE);
-  printf("@assert isbits(XEvent)\n");
-  printf("\n");
+  fputs("type XEvent <: AbstractXEvent\n"
+        "    _type::Cint # Type of event.\n"
+        "    # Padding to match the right size:", stdout);
+  for (i = 1; i < n; ++i) {
+    printf("%si%02d::Cint", ((i%7) == 1 ? "\n    " : "; "), i);
+  }
+  fputs("\n"
+        "    (::Type{XEvent})() = new()\n"
+        "end\n"
+        "\n", stdout);
 
 }
 
