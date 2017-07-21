@@ -83,15 +83,15 @@ XGetAtomNames(dpy::Ptr{Display}, atoms::Ptr{Atom}, count::Integer, names_return:
           (Ptr{Display}, Ptr{Atom}, Cint, Ptr{Cstring}),
           dpy, atoms, count, names_return)
 
-XGetDefault(dpy::Ptr{Display}, program::Ptr{Cchar}, option::Ptr{Cchar}) =
-    ccall((:XGetDefault, _XLIB), Ptr{Cchar},
-          (Ptr{Display}, Ptr{Cchar}, Ptr{Cchar}),
+XGetDefault(dpy::Ptr{Display}, program::AbstractString, option::AbstractString) =
+    ccall((:XGetDefault, _XLIB), Cstring,
+          (Ptr{Display}, Cstring, Cstring),
           dpy, program, option)
 
 XDisplayName(name) =
     ccall((:XDisplayName, _XLIB), Cstring, (Cstring,), name)
 
-XKeysymToString(keysym::KeySym) =
+XKeysymToString(keysym::Integer) =
     ccall((:XKeysymToString, _XLIB), Cstring, (KeySym,), keysym)
 
 # FIXME: Cint (*XSynchronize(dpy::Ptr{Display}, onoff::Integer))(dpy::Ptr{Display});
