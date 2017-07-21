@@ -213,7 +213,7 @@ gen_offsets()
 }
 
 static void
-gen_accessors()
+gen_methods()
 {
 
 #define GET_SCREEN(F,T,M) unsafe_load(#F, "scr", "Screen", #T, SCREEN_OFFSET(M))
@@ -310,15 +310,15 @@ int main(int argc, const char* argv[])
 
   if (argc < 2) {
   usage:
-    fprintf(stderr, "Usage: %s types|accessors|offsets ...\n",
+    fprintf(stderr, "Usage: %s types|methods|offsets ...\n",
 	    argv[0]);
     return 1;
   }
   for (i = 1; i < argc; ++i) {
     if (strcmp(argv[i], "types") == 0) {
       gen_types();
-    } else if (strcmp(argv[i], "accessors") == 0) {
-      gen_accessors();
+    } else if (strcmp(argv[i], "methods") == 0) {
+      gen_methods();
     } else if (strcmp(argv[i], "offsets") == 0) {
       gen_offsets();
     } else {

@@ -24,7 +24,7 @@ default: all
 clean:
 	rm -f *~ *.o gendeps types.jl accessors.jl constants.jl
 
-all: types.jl accessors.jl
+all: types.jl methods.jl
 
 constants.jl: filter_defines.sed $(X11_INCDIR)/X.h $(X11_INCDIR)/Xlib.h
 	echo "# Constants from \`X.h\`" >"$@"
@@ -39,8 +39,8 @@ types.jl: gendeps
 offsets.jl: gendeps
 	./gendeps offsets > "$@"
 
-accessors.jl: gendeps
-	./gendeps accessors > "$@"
+methods.jl: gendeps
+	./gendeps methods > "$@"
 
 gendeps: $(srcdir)/gendeps.c Makefile
 	$(CC) $(CPPFLAGS) $(CFLAGS) "$<" -o "$@" $(LDFLAGS)

@@ -3,7 +3,7 @@ work/
 deps/gendeps
 deps/deps.jl
 deps/types.jl
-deps/accessors.jl
+deps/methods.jl
 deps/downloads/
 deps/src/
 deps/usr/

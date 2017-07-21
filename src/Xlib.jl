@@ -21,7 +21,6 @@ const _XLIB = "libX11.so" # FIXME: should be set in ../deps
 include("exports.jl")
 include("constants.jl")
 include("types.jl")
-include("../deps/accessors.jl")
 include("methods.jl")
 include("utils.jl")
 

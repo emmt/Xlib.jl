@@ -10,6 +10,7 @@
 # This file is part of Xlib.jl which is licensed under the MIT "Expat" License.
 #
 
+include("../deps/methods.jl")
 
 const _KeyCode = (NeedWidePrototypes ? Cuint : KeyCode)
 
