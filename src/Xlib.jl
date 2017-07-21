@@ -10,6 +10,8 @@
 # This file is part of Xlib.jl which is licensed under the MIT "Expat" License.
 #
 
+__precompile__(true)
+
 module Xlib
 
 using Compat
